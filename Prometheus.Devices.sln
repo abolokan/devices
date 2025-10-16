@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prometheus.Devices.Scanners
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prometheus.Devices.Test.App", "src\Prometheus.Devices.Test.App\Prometheus.Devices.Test.App.csproj", "{06080327-E3D9-629D-5C9F-A0E747241EBA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F4585D03-5FB9-41BC-8541-834C4BD0C09A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,6 +52,14 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CFD11B27-E79A-4270-AA11-64C56015BE7C} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{1FB23F54-DCD0-4F91-8C6D-5430ACE925B6} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{CA474973-04B4-4B2C-B935-9D246ECC34A7} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{E6278EAB-2350-448E-A93D-C4D0AEBF64CB} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{F7A6A1CD-91E2-4819-A952-4F936E702A51} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{06080327-E3D9-629D-5C9F-A0E747241EBA} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AC923296-AA41-498D-A172-B33D18F5BA8D}
