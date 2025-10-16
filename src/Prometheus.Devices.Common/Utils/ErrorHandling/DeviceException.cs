@@ -61,7 +61,7 @@ namespace DeviceWrappers.Utils.ErrorHandling
         public int TimeoutMs { get; }
 
         public DeviceTimeoutException(string deviceId, string deviceName, int timeoutMs)
-            : base(deviceId, deviceName, $"Превышено время ожидания ({timeoutMs}ms)", ErrorCode.Timeout)
+            : base(deviceId, deviceName, $"Timeout exceeded ({timeoutMs}ms)", ErrorCode.Timeout)
         {
             TimeoutMs = timeoutMs;
         }
@@ -73,7 +73,7 @@ namespace DeviceWrappers.Utils.ErrorHandling
     public class DeviceBusyException : DeviceException
     {
         public DeviceBusyException(string deviceId, string deviceName, string operation)
-            : base(deviceId, deviceName, $"Устройство занято, не может выполнить: {operation}", ErrorCode.DeviceBusy)
+            : base(deviceId, deviceName, $"Device busy, cannot execute: {operation}", ErrorCode.DeviceBusy)
         {
         }
     }

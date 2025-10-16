@@ -49,7 +49,7 @@ namespace DeviceWrappers.Utils.ErrorHandling
             }
 
             throw new DeviceException(
-                $"Операция не удалась после {MaxRetries} попыток", 
+                $"Operation failed after {MaxRetries} attempts", 
                 lastException);
         }
 

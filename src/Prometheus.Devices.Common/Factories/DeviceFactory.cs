@@ -7,11 +7,9 @@ using Prometheus.Devices.Core.Profiles;
 using Prometheus.Devices.Common.Platform.Windows;
 using Prometheus.Devices.Common.Platform.Linux;
 using Prometheus.Devices.Printers.Drivers.EscPos;
-using Prometheus.Devices.Printers.Drivers.Bixolon;
 using DeviceWrappers.Devices.Camera;
 using DeviceWrappers.Devices.Printer;
 using DeviceWrappers.Devices.Scanner;
-
 
 namespace Prometheus.Devices.Common.Factories
 {
@@ -68,8 +66,6 @@ namespace Prometheus.Devices.Common.Factories
             var proto = (profile?.Protocol ?? "").ToUpperInvariant();
             return proto switch
             {
-                "BIXOLON" => new BixolonBk331Driver(),
-                "ESC_POS" => new EscPosDriver(),
                 _ => new EscPosDriver()
             };
         }

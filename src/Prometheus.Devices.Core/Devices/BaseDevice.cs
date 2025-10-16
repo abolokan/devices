@@ -43,16 +43,16 @@ namespace Prometheus.Devices.Core.Devices
 
             try
             {
-                SetStatus(DeviceStatus.Initializing, "Инициализация устройства...");
+                SetStatus(DeviceStatus.Initializing, "Initializing device...");
                 
                 await OnInitializeAsync(cancellationToken);
                 
-                SetStatus(DeviceStatus.Ready, "Устройство готово к работе");
+                SetStatus(DeviceStatus.Ready, "Device ready");
                 return true;
             }
             catch (Exception ex)
             {
-                SetStatus(DeviceStatus.Error, $"Ошибка инициализации: {ex.Message}");
+                SetStatus(DeviceStatus.Error, $"Initialization error: {ex.Message}");
                 return false;
             }
         }
@@ -71,12 +71,12 @@ namespace Prometheus.Devices.Core.Devices
                 if (Status == DeviceStatus.NotInitialized)
                     return await InitializeAsync(cancellationToken);
 
-                SetStatus(DeviceStatus.Ready, "Подключено к устройству");
+                SetStatus(DeviceStatus.Ready, "Connected to device");
                 return true;
             }
             catch (Exception ex)
             {
-                SetStatus(DeviceStatus.Error, $"Ошибка подключения: {ex.Message}");
+                SetStatus(DeviceStatus.Error, $"Connection error: {ex.Message}");
                 return false;
             }
         }
@@ -85,13 +85,13 @@ namespace Prometheus.Devices.Core.Devices
         {
             try
             {
-                SetStatus(DeviceStatus.Disconnected, "Отключение от устройства...");
+                SetStatus(DeviceStatus.Disconnected, "Disconnecting from device...");
                 await Connection.CloseAsync(cancellationToken);
                 return true;
             }
             catch (Exception ex)
             {
-                SetStatus(DeviceStatus.Error, $"Ошибка отключения: {ex.Message}");
+                SetStatus(DeviceStatus.Error, $"Disconnection error: {ex.Message}");
                 return false;
             }
         }
@@ -101,7 +101,7 @@ namespace Prometheus.Devices.Core.Devices
             ThrowIfDisposed();
 
             if (Status != DeviceStatus.Ready && Status != DeviceStatus.Busy)
-                throw new InvalidOperationException("Устройство не готово к работе");
+                throw new InvalidOperationException("Device not ready");
 
             return await OnGetDeviceInfoAsync(cancellationToken);
         }
@@ -160,7 +160,7 @@ namespace Prometheus.Devices.Core.Devices
         {
             ThrowIfDisposed();
             if (Status != DeviceStatus.Ready && Status != DeviceStatus.Busy)
-                throw new InvalidOperationException("Устройство не готово к работе");
+                throw new InvalidOperationException("Device not ready");
         }
 
         public virtual void Dispose()
