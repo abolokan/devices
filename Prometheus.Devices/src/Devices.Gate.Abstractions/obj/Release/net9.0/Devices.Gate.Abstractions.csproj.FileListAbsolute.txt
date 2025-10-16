@@ -1,0 +1,17 @@
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Gate.Abstractions\bin\Release\net9.0\Devices.Gate.Abstractions.deps.json
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Gate.Abstractions\bin\Release\net9.0\Devices.Gate.Abstractions.dll
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Gate.Abstractions\bin\Release\net9.0\Devices.Gate.Abstractions.pdb
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Gate.Abstractions\bin\Release\net9.0\Devices.Abstractions.dll
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Gate.Abstractions\bin\Release\net9.0\Devices.Transport.Abstractions.dll
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Gate.Abstractions\bin\Release\net9.0\Devices.Abstractions.pdb
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Gate.Abstractions\bin\Release\net9.0\Devices.Transport.Abstractions.pdb
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Gate.Abstractions\obj\Release\net9.0\Devices.Gate.Abstractions.csproj.AssemblyReference.cache
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Gate.Abstractions\obj\Release\net9.0\Devices.Gate.Abstractions.GeneratedMSBuildEditorConfig.editorconfig
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Gate.Abstractions\obj\Release\net9.0\Devices.Gate.Abstractions.AssemblyInfoInputs.cache
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Gate.Abstractions\obj\Release\net9.0\Devices.Gate.Abstractions.AssemblyInfo.cs
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Gate.Abstractions\obj\Release\net9.0\Devices.Gate.Abstractions.csproj.CoreCompileInputs.cache
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Gate.Abstractions\obj\Release\net9.0\Devices..34026902.Up2Date
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Gate.Abstractions\obj\Release\net9.0\Devices.Gate.Abstractions.dll
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Gate.Abstractions\obj\Release\net9.0\refint\Devices.Gate.Abstractions.dll
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Gate.Abstractions\obj\Release\net9.0\Devices.Gate.Abstractions.pdb
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Gate.Abstractions\obj\Release\net9.0\ref\Devices.Gate.Abstractions.dll

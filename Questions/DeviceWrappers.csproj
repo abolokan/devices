@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <EnableDefaultItems>false</EnableDefaultItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Core/**/*.cs" />
+    <Compile Include="Devices/**/*.cs" />
+    <Compile Include="Drivers/**/*.cs" />
+    <Compile Include="Platform/**/*.cs" />
+    <Compile Include="Utils/**/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OpenCvSharp4" Version="4.*" />
+    <PackageReference Include="OpenCvSharp4.runtime.win" Version="4.*" />
+    <PackageReference Include="System.IO.Ports" Version="8.*" />
+    <PackageReference Include="System.Drawing.Common" Version="8.*" />
+  </ItemGroup>
+</Project>
+
+

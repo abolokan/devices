@@ -1,0 +1,17 @@
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Camera.Abstractions\bin\Release\net9.0\Devices.Camera.Abstractions.deps.json
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Camera.Abstractions\bin\Release\net9.0\Devices.Camera.Abstractions.dll
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Camera.Abstractions\bin\Release\net9.0\Devices.Camera.Abstractions.pdb
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Camera.Abstractions\bin\Release\net9.0\Devices.Abstractions.dll
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Camera.Abstractions\bin\Release\net9.0\Devices.Transport.Abstractions.dll
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Camera.Abstractions\bin\Release\net9.0\Devices.Abstractions.pdb
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Camera.Abstractions\bin\Release\net9.0\Devices.Transport.Abstractions.pdb
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Camera.Abstractions\obj\Release\net9.0\Devices.Camera.Abstractions.csproj.AssemblyReference.cache
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Camera.Abstractions\obj\Release\net9.0\Devices.Camera.Abstractions.GeneratedMSBuildEditorConfig.editorconfig
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Camera.Abstractions\obj\Release\net9.0\Devices.Camera.Abstractions.AssemblyInfoInputs.cache
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Camera.Abstractions\obj\Release\net9.0\Devices.Camera.Abstractions.AssemblyInfo.cs
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Camera.Abstractions\obj\Release\net9.0\Devices.Camera.Abstractions.csproj.CoreCompileInputs.cache
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Camera.Abstractions\obj\Release\net9.0\Devices..EF4D0C09.Up2Date
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Camera.Abstractions\obj\Release\net9.0\Devices.Camera.Abstractions.dll
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Camera.Abstractions\obj\Release\net9.0\refint\Devices.Camera.Abstractions.dll
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Camera.Abstractions\obj\Release\net9.0\Devices.Camera.Abstractions.pdb
+C:\Work\Temp\Edge-Devices\Prometheus.Devices\src\Devices.Camera.Abstractions\obj\Release\net9.0\ref\Devices.Camera.Abstractions.dll
