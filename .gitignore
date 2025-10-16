@@ -61,7 +61,8 @@ Migrations/
 # Compiled binaries
 *.dll
 *.exe
-*.app
+# *.app - Commented out because it ignores folders ending with .App
+# macOS app bundles should be added specifically if needed
 *.appx
 *.apk
 *.so
