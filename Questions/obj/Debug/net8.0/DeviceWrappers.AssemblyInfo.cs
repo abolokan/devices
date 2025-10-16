@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DeviceWrappers")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f180c2bc085bba3ad99a3efa64943e88cd280d43")]
 [assembly: System.Reflection.AssemblyProductAttribute("DeviceWrappers")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DeviceWrappers")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

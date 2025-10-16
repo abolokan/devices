@@ -1,3 +1,139 @@
-.vs
-bin
-obj
+## Visual Studio / .NET / C#
+
+# Build results
+bin/
+obj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]og/
+[Ll]ogs/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual Studio
+.vs/
+.vscode/
+
+# Rider
+.idea/
+*.sln.iml
+
+# Backup & report files
+*.bak
+*.backup
+*.log
+*.tlog
+*.vspscc
+*.vssscc
+
+# Test results
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# NCrunch
+_NCrunch_*
+.*crunch*.local.xml
+
+# ReSharper
+_ReSharper*/
+*.DotSettings.user
+
+# NuGet
+*.nupkg
+*.snupkg
+*.nuspec
+**/packages/*
+!**/packages/build/
+*.nuget.props
+*.nuget.targets
+
+# Entity Framework
+Migrations/
+*.dbmdl
+
+# Compiled binaries
+*.dll
+*.exe
+*.app
+*.appx
+*.apk
+*.so
+*.dylib
+*.a
+*.lib
+
+# Publish
+publish/
+PublishProfiles/
+*.pubxml
+*.publishproj
+
+# Web
+wwwroot/dist/
+wwwroot/lib/
+node_modules/
+bower_components/
+
+# TypeScript
+*.tsbuildinfo
+
+# Coverage tools
+coverage/
+*.coverage
+*.coveragexml
+*.codecoverage
+lcov.info
+
+# Azure
+*.azurePubxml
+*.pubxml.user
+*.publishsettings
+
+# Logs and local config
+*.log
+appsettings.Development.json
+appsettings.Local.json
+secrets.json
+
+# Others
+_Dependencies/
+.cache/
+dist/
+tmp/
+temp/
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# macOS / Linux
+.DS_Store
+*.swp
+*.swo
+*.orig
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Backup files
+*~
+*.bak
+*.tmp
+*.temp
+*.old
+

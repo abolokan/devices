@@ -1,5 +1,0 @@
-C:\Work\Temp\Edge-Devices\Prometheus.Devices\apps\Devices.Host.Cli\bin\Release\net9.0\win-x64\publish\Devices.Host.Cli.pdb
-C:\Work\Temp\Edge-Devices\Prometheus.Devices\apps\Devices.Host.Cli\bin\Release\net9.0\win-x64\publish\Devices.Core.pdb
-C:\Work\Temp\Edge-Devices\Prometheus.Devices\apps\Devices.Host.Cli\bin\Release\net9.0\win-x64\publish\Devices.Abstractions.pdb
-C:\Work\Temp\Edge-Devices\Prometheus.Devices\apps\Devices.Host.Cli\bin\Release\net9.0\win-x64\publish\Devices.Transport.Abstractions.pdb
-C:\Work\Temp\Edge-Devices\Prometheus.Devices\apps\Devices.Host.Cli\bin\Release\net9.0\win-x64\publish\Devices.Host.Cli.exe
