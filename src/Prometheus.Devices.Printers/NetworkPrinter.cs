@@ -3,7 +3,8 @@ using Prometheus.Devices.Core.Connections;
 namespace DeviceWrappers.Devices.Printer
 {
     /// <summary>
-    /// Network printer (TCP connection)
+    /// Network printer (TCP connection) using PJL protocol
+    /// Note: For Linux, use DriverPrinter with TcpConnection instead, or OfficePrinter with CUPS.
     /// </summary>
     public class NetworkPrinter : GenericPrinter
     {

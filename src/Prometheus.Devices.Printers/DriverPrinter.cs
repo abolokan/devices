@@ -5,10 +5,7 @@ using Prometheus.Devices.Core.Interfaces;
 using Prometheus.Devices.Core.Profiles;
 
 namespace DeviceWrappers.Devices.Printer
-{
-    /// <summary>
-    /// Printer operating via command driver (ESC/POS, Bixolon, etc.)
-    /// </summary>
+{   
     public class DriverPrinter : BaseDevice, IPrinter
     {
         private readonly IPrinterDriver _driver;
@@ -42,7 +39,7 @@ namespace DeviceWrappers.Devices.Printer
             if (init?.Length > 0)
                 await Connection.SendAsync(init, cancellationToken);
 
-            var cpId = _profile.EscPosCodepage ?? 0; // if not set - leave default
+            var cpId = _profile.EscPosCodepage ?? 0;
             var cp = _driver.BuildSetCodepage(cpId);
             if (cp?.Length > 0)
                 await Connection.SendAsync(cp, cancellationToken);
@@ -145,6 +142,142 @@ namespace DeviceWrappers.Devices.Printer
         {
             // In RAW mode, usually unavailable; return unknown
             return Task.FromResult(new ConsumablesLevel { TonerLevel = -1, PaperLevel = -1, DrumLevel = -1 });
+        }
+
+        /// <summary>
+        /// Print barcode (Linux/Windows compatible)
+        /// </summary>
+        public async Task<PrintJob> PrintBarcodeAsync(
+            string data, 
+            BarcodeType type = BarcodeType.Code128,
+            int height = 100, 
+            int width = 3,
+            CancellationToken cancellationToken = default)
+        {
+            ThrowIfNotReady();
+
+            var barcodeCmd = _driver.BuildPrintBarcode(data, type, height, width);
+            var feedCmd = _driver.BuildFeedLines(_profile.DefaultFeedLines);
+
+            var commands = new List<byte>();
+            commands.AddRange(barcodeCmd);
+            commands.AddRange(feedCmd);
+
+            if (_profile.SupportsCut)
+            {
+                var cutCmd = _driver.BuildCut(_profile.PartialCut);
+                commands.AddRange(cutCmd);
+            }
+
+            await Connection.SendAsync(commands.ToArray(), cancellationToken);
+
+            return new PrintJob
+            {
+                JobId = Guid.NewGuid().ToString(),
+                DocumentName = $"Barcode_{type}_{data}",
+                TotalPages = 1,
+                PrintedPages = 1,
+                Status = PrintJobStatus.Completed,
+                SubmittedAt = DateTime.Now
+            };
+        }
+
+        /// <summary>
+        /// Print QR code (Linux/Windows compatible)
+        /// </summary>
+        public async Task<PrintJob> PrintQrCodeAsync(
+            string data,
+            int size = 6,
+            QrErrorCorrection errorLevel = QrErrorCorrection.M,
+            CancellationToken cancellationToken = default)
+        {
+            ThrowIfNotReady();
+
+            var qrCmd = _driver.BuildPrintQrCode(data, size, errorLevel);
+            var feedCmd = _driver.BuildFeedLines(_profile.DefaultFeedLines);
+
+            var commands = new List<byte>();
+            commands.AddRange(qrCmd);
+            commands.AddRange(feedCmd);
+
+            if (_profile.SupportsCut)
+            {
+                var cutCmd = _driver.BuildCut(_profile.PartialCut);
+                commands.AddRange(cutCmd);
+            }
+
+            await Connection.SendAsync(commands.ToArray(), cancellationToken);
+
+            return new PrintJob
+            {
+                JobId = Guid.NewGuid().ToString(),
+                DocumentName = $"QRCode_{data.Substring(0, Math.Min(20, data.Length))}",
+                TotalPages = 1,
+                PrintedPages = 1,
+                Status = PrintJobStatus.Completed,
+                SubmittedAt = DateTime.Now
+            };
+        }
+
+        /// <summary>
+        /// Print label with barcode and text (common packaging scenario)
+        /// Linux/Windows compatible
+        /// </summary>
+        public async Task<PrintJob> PrintLabelAsync(
+            string title,
+            string barcodeData,
+            BarcodeType barcodeType = BarcodeType.Code128,
+            string[] additionalLines = null,
+            CancellationToken cancellationToken = default)
+        {
+            ThrowIfNotReady();
+
+            var encoding = Encoding.GetEncoding(_profile.DefaultCodepage);
+            var commands = new List<byte>();
+
+            // Print title
+            if (!string.IsNullOrEmpty(title))
+            {
+                var titleBytes = _driver.BuildPrintText(title, encoding);
+                commands.AddRange(titleBytes);
+                commands.AddRange(_driver.BuildFeedLines(1));
+            }
+
+            // Print barcode
+            var barcodeCmd = _driver.BuildPrintBarcode(barcodeData, barcodeType);
+            commands.AddRange(barcodeCmd);
+            commands.AddRange(_driver.BuildFeedLines(1));
+
+            // Print additional lines
+            if (additionalLines != null)
+            {
+                foreach (var line in additionalLines)
+                {
+                    var lineBytes = _driver.BuildPrintText(line, encoding);
+                    commands.AddRange(lineBytes);
+                    commands.AddRange(_driver.BuildFeedLines(1));
+                }
+            }
+
+            // Feed and cut
+            commands.AddRange(_driver.BuildFeedLines(_profile.DefaultFeedLines));
+            if (_profile.SupportsCut)
+            {
+                var cutCmd = _driver.BuildCut(_profile.PartialCut);
+                commands.AddRange(cutCmd);
+            }
+
+            await Connection.SendAsync(commands.ToArray(), cancellationToken);
+
+            return new PrintJob
+            {
+                JobId = Guid.NewGuid().ToString(),
+                DocumentName = $"Label_{barcodeData}",
+                TotalPages = 1,
+                PrintedPages = 1,
+                Status = PrintJobStatus.Completed,
+                SubmittedAt = DateTime.Now
+            };
         }
 
         private void OnPrintJobStatusChanged(string jobId, PrintJobStatus oldStatus, PrintJobStatus newStatus, int progress)

@@ -7,6 +7,7 @@ using Prometheus.Devices.Core.Profiles;
 using Prometheus.Devices.Common.Platform.Windows;
 using Prometheus.Devices.Common.Platform.Linux;
 using Prometheus.Devices.Printers.Drivers.EscPos;
+using Prometheus.Devices.Printers.Drivers.Zpl;
 using DeviceWrappers.Devices.Camera;
 using DeviceWrappers.Devices.Printer;
 using DeviceWrappers.Devices.Scanner;
@@ -28,13 +29,13 @@ namespace Prometheus.Devices.Common.Factories
         public static int[] EnumerateLocalCameraIndices(int maxProbe = 10)
         {
             var indices = new List<int>();
-            for (int i = 0; i < maxProbe; i++)
+            for (var i = 0; i < maxProbe; i++)
             {
                 using var cap = new VideoCapture(i);
                 if (cap.IsOpened())
                     indices.Add(i);
             }
-            return indices.ToArray();
+            return [.. indices];
         }
 
         public static ICamera CreateIpCamera(string ipAddress, int port, string name = null)
@@ -66,7 +67,10 @@ namespace Prometheus.Devices.Common.Factories
             var proto = (profile?.Protocol ?? "").ToUpperInvariant();
             return proto switch
             {
-                _ => new EscPosDriver()
+                "ZPL" => new ZplDriver(),
+                "ESC_POS" or "ESCPOS" => new EscPosDriver(),
+                "BIXOLON" => new EscPosDriver(), // Bixolon uses ESC/POS
+                _ => new EscPosDriver() // Default to ESC/POS
             };
         }
 

@@ -5,7 +5,9 @@ using Prometheus.Devices.Core.Interfaces;
 namespace DeviceWrappers.Devices.Printer
 {
     /// <summary>
-    /// Generic printer implementation
+    /// Generic printer implementation using PJL protocol
+    /// Note: Primarily for Windows. For Linux, use DriverPrinter with ESC/POS or OfficePrinter with CUPS.
+    /// PJL commands may not work through Linux CUPS without RAW queue configuration.
     /// </summary>
     public class GenericPrinter : BaseDevice, IPrinter
     {

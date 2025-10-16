@@ -7,6 +7,8 @@ namespace DeviceWrappers.Devices.Printer
 {
     /// <summary>
     /// Office printer (laser/inkjet) via platform-specific API
+    /// Cross-platform: Uses PrintDocument on Windows, CUPS/lp on Linux
+    /// Requires: Printer installed in OS with appropriate driver
     /// </summary>
     public class OfficePrinter : BaseDevice, IPrinter
     {
@@ -28,7 +30,7 @@ namespace DeviceWrappers.Devices.Printer
         public event EventHandler<PrintJobStatusChangedEventArgs> PrintJobStatusChanged;
 
         public OfficePrinter(string deviceId, string deviceName, string systemPrinterName, IPlatformPrinter platformPrinter)
-            : base(deviceId, deviceName, new NullConnection()) // Office printers don't use network connection
+            : base(deviceId, deviceName, new NullConnection())
         {
             _systemPrinterName = systemPrinterName ?? throw new ArgumentNullException(nameof(systemPrinterName));
             _platformPrinter = platformPrinter ?? throw new ArgumentNullException(nameof(platformPrinter));
