@@ -1,6 +1,5 @@
-using System;
 using System.Diagnostics;
-using DeviceWrappers.Core.Platform;
+using Prometheus.Devices.Core.Platform;
 
 namespace DeviceWrappers.Platform.Linux
 {

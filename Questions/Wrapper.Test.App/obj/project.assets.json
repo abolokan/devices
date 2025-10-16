@@ -178,10 +178,11 @@
       },
       "DeviceWrappers/1.0.0": {
         "type": "project",
-        "framework": ".NETCoreApp,Version=v8.0",
+        "framework": ".NETCoreApp,Version=v9.0",
         "dependencies": {
           "OpenCvSharp4": "4.0.0",
           "OpenCvSharp4.runtime.win": "4.0.0",
+          "Prometheus.Devices.Core": "1.0.0",
           "System.Drawing.Common": "8.0.0",
           "System.IO.Ports": "8.0.0"
         },
@@ -190,6 +191,61 @@
         },
         "runtime": {
           "bin/placeholder/DeviceWrappers.dll": {}
+        }
+      },
+      "Prometheus.Devices.Cameras/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "Prometheus.Devices.Core": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Prometheus.Devices.Cameras.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Prometheus.Devices.Cameras.dll": {}
+        }
+      },
+      "Prometheus.Devices.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "OpenCvSharp4": "4.0.0",
+          "OpenCvSharp4.runtime.win": "4.0.0",
+          "System.Drawing.Common": "8.0.0",
+          "System.IO.Ports": "8.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Prometheus.Devices.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Prometheus.Devices.Core.dll": {}
+        }
+      },
+      "Prometheus.Devices.Printers/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "Prometheus.Devices.Core": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Prometheus.Devices.Printers.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Prometheus.Devices.Printers.dll": {}
+        }
+      },
+      "Prometheus.Devices.Scanners/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "Prometheus.Devices.Core": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Prometheus.Devices.Scanners.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Prometheus.Devices.Scanners.dll": {}
         }
       }
     }
@@ -470,11 +526,34 @@
       "type": "project",
       "path": "../DeviceWrappers.csproj",
       "msbuildProject": "../DeviceWrappers.csproj"
+    },
+    "Prometheus.Devices.Cameras/1.0.0": {
+      "type": "project",
+      "path": "../../Prometheus.Devices.Cameras/Prometheus.Devices.Cameras.csproj",
+      "msbuildProject": "../../Prometheus.Devices.Cameras/Prometheus.Devices.Cameras.csproj"
+    },
+    "Prometheus.Devices.Core/1.0.0": {
+      "type": "project",
+      "path": "../../Prometheus.Devices.Core/Prometheus.Devices.Core.csproj",
+      "msbuildProject": "../../Prometheus.Devices.Core/Prometheus.Devices.Core.csproj"
+    },
+    "Prometheus.Devices.Printers/1.0.0": {
+      "type": "project",
+      "path": "../../Prometheus.Devices.Printers/Prometheus.Devices.Printers.csproj",
+      "msbuildProject": "../../Prometheus.Devices.Printers/Prometheus.Devices.Printers.csproj"
+    },
+    "Prometheus.Devices.Scanners/1.0.0": {
+      "type": "project",
+      "path": "../../Prometheus.Devices.Scanners/Prometheus.Devices.Scanners.csproj",
+      "msbuildProject": "../../Prometheus.Devices.Scanners/Prometheus.Devices.Scanners.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net9.0": [
-      "DeviceWrappers >= 1.0.0"
+      "DeviceWrappers >= 1.0.0",
+      "Prometheus.Devices.Cameras >= 1.0.0",
+      "Prometheus.Devices.Printers >= 1.0.0",
+      "Prometheus.Devices.Scanners >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -510,6 +589,15 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
+            "C:\\Work\\Temp\\Edge-Devices\\Prometheus.Devices.Cameras\\Prometheus.Devices.Cameras.csproj": {
+              "projectPath": "C:\\Work\\Temp\\Edge-Devices\\Prometheus.Devices.Cameras\\Prometheus.Devices.Cameras.csproj"
+            },
+            "C:\\Work\\Temp\\Edge-Devices\\Prometheus.Devices.Printers\\Prometheus.Devices.Printers.csproj": {
+              "projectPath": "C:\\Work\\Temp\\Edge-Devices\\Prometheus.Devices.Printers\\Prometheus.Devices.Printers.csproj"
+            },
+            "C:\\Work\\Temp\\Edge-Devices\\Prometheus.Devices.Scanners\\Prometheus.Devices.Scanners.csproj": {
+              "projectPath": "C:\\Work\\Temp\\Edge-Devices\\Prometheus.Devices.Scanners\\Prometheus.Devices.Scanners.csproj"
+            },
             "C:\\Work\\Temp\\Edge-Devices\\Questions\\DeviceWrappers.csproj": {
               "projectPath": "C:\\Work\\Temp\\Edge-Devices\\Questions\\DeviceWrappers.csproj"
             }

@@ -1,5 +1,4 @@
 using System.Text;
-using DeviceWrappers.Core.Drivers;
 
 namespace DeviceWrappers.Drivers.Printers
 {

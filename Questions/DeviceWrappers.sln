@@ -7,6 +7,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceWrappers", "DeviceWra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wrapper.Test.App", "Wrapper.Test.App\Wrapper.Test.App.csproj", "{C793FE6E-E526-DE0B-EDCA-69F481E95912}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prometheus.Devices.Core", "..\Prometheus.Devices.Core\Prometheus.Devices.Core.csproj", "{CFD11B27-E79A-4270-AA11-64C56015BE7C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prometheus.Devices.Printers", "..\Prometheus.Devices.Printers\Prometheus.Devices.Printers.csproj", "{1FB23F54-DCD0-4F91-8C6D-5430ACE925B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prometheus.Devices.Cameras", "..\Prometheus.Devices.Cameras\Prometheus.Devices.Cameras.csproj", "{CA474973-04B4-4B2C-B935-9D246ECC34A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prometheus.Devices.Common", "..\Prometheus.Devices.Common\Prometheus.Devices.Common.csproj", "{E6278EAB-2350-448E-A93D-C4D0AEBF64CB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prometheus.Devices.Scanners", "..\Prometheus.Devices.Scanners\Prometheus.Devices.Scanners.csproj", "{F7A6A1CD-91E2-4819-A952-4F936E702A51}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +31,26 @@ Global
 		{C793FE6E-E526-DE0B-EDCA-69F481E95912}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C793FE6E-E526-DE0B-EDCA-69F481E95912}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C793FE6E-E526-DE0B-EDCA-69F481E95912}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFD11B27-E79A-4270-AA11-64C56015BE7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFD11B27-E79A-4270-AA11-64C56015BE7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFD11B27-E79A-4270-AA11-64C56015BE7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFD11B27-E79A-4270-AA11-64C56015BE7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FB23F54-DCD0-4F91-8C6D-5430ACE925B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FB23F54-DCD0-4F91-8C6D-5430ACE925B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FB23F54-DCD0-4F91-8C6D-5430ACE925B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FB23F54-DCD0-4F91-8C6D-5430ACE925B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA474973-04B4-4B2C-B935-9D246ECC34A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA474973-04B4-4B2C-B935-9D246ECC34A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA474973-04B4-4B2C-B935-9D246ECC34A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA474973-04B4-4B2C-B935-9D246ECC34A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6278EAB-2350-448E-A93D-C4D0AEBF64CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6278EAB-2350-448E-A93D-C4D0AEBF64CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6278EAB-2350-448E-A93D-C4D0AEBF64CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6278EAB-2350-448E-A93D-C4D0AEBF64CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7A6A1CD-91E2-4819-A952-4F936E702A51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7A6A1CD-91E2-4819-A952-4F936E702A51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7A6A1CD-91E2-4819-A952-4F936E702A51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7A6A1CD-91E2-4819-A952-4F936E702A51}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

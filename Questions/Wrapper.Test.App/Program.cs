@@ -1,12 +1,7 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using DeviceWrappers.Core.Drivers;
-using DeviceWrappers.Core.Profiles;
-using DeviceWrappers.Core.Connections;
-using DeviceWrappers.Core.Interfaces;
-using DeviceWrappers.Utils;
+﻿using DeviceWrappers.Utils;
+using Prometheus.Devices.Core.Interfaces;
+using Prometheus.Devices.Core.Drivers;
+using Prometheus.Devices.Core.Connections;
 
 class Program
 {

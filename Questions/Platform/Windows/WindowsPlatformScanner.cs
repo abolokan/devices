@@ -1,11 +1,5 @@
-using System;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading;
-using System.Threading.Tasks;
-using DeviceWrappers.Core.Interfaces;
-using DeviceWrappers.Core.Platform;
+using Prometheus.Devices.Core.Interfaces;
+using Prometheus.Devices.Core.Platform;
 
 namespace DeviceWrappers.Platform.Windows
 {

@@ -1,11 +1,6 @@
-using System;
 using System.Drawing;
 using System.Drawing.Printing;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using DeviceWrappers.Core.Platform;
+using Prometheus.Devices.Core.Platform;
 
 namespace DeviceWrappers.Platform.Windows
 {

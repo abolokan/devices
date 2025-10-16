@@ -8,6 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Prometheus.Devices.Cameras\Prometheus.Devices.Cameras.csproj" />
+    <ProjectReference Include="..\..\Prometheus.Devices.Printers\Prometheus.Devices.Printers.csproj" />
+    <ProjectReference Include="..\..\Prometheus.Devices.Scanners\Prometheus.Devices.Scanners.csproj" />
     <ProjectReference Include="..\DeviceWrappers.csproj" />
   </ItemGroup>
 

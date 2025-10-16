@@ -1,5 +1,5 @@
 using System.Text;
-using DeviceWrappers.Core.Drivers;
+using Prometheus.Devices.Core.Drivers;
 
 namespace DeviceWrappers.Drivers.Printers
 {
