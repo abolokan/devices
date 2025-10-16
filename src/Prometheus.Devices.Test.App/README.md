@@ -62,24 +62,71 @@ Detailed information:
 
 ## Usage
 
+### Manual Testing (Options 1-5)
 1. Run the application
 2. Select a device to test (1-4)
 3. Device will be automatically registered in DeviceManager
 4. Select option 5 to check status of all devices
 
+### Configuration-Based Testing (Option 6)
+1. Edit `appsettings.json` to configure your devices
+2. Select option 6 "Load devices from appsettings.json"
+3. All enabled devices will be loaded and registered automatically
+4. You can then:
+   - Connect to all devices at once
+   - Test all printers
+   - Capture from all cameras
+
 ## Configuration
 
-The `appsettings.json` file contains settings:
+The `appsettings.json` file contains settings and device configurations:
 
 ```json
 {
   "PrometheusDevices": {
     "DefaultTimeout": 5000,
     "RetryAttempts": 3,
-    "EnableHealthChecks": true
+    "EnableHealthChecks": true,
+
+    "Cameras": {
+      "BuiltInCamera": {
+        "Type": "Local",
+        "Index": 0,
+        "Resolution": "1920x1080",
+        "FrameRate": 30,
+        "Enabled": true
+      }
+    },
+
+    "Printers": {
+      "BixolonBK331": {
+        "Type": "Driver",
+        "IpAddress": "192.168.1.50",
+        "Port": 9100,
+        "ProfilePath": "printer.profile.json",
+        "Enabled": false
+      }
+    }
   }
 }
 ```
+
+### Configuration Options
+
+**Camera Types:**
+- `Local` - Built-in or USB cameras (uses index)
+- `IP` - Network IP cameras
+- `USB` - USB cameras by VID/PID
+
+**Printer Types:**
+- `Driver` - ESC/POS printers with profile
+- `Office` - System printers (Windows/Linux)
+- `Network` - Network printers (TCP/IP)
+- `Serial` - Serial port printers
+- `USB` - USB printers by VID/PID
+
+**Scanner Types:**
+- `Office` - System scanners (SANE/WIA)
 
 ## Dependencies
 

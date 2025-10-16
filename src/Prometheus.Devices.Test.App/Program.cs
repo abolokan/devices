@@ -8,6 +8,7 @@ using Prometheus.Devices.Core.Extensions;
 using Prometheus.Devices.Core.HealthChecks;
 using Prometheus.Devices.Common.Configuration;
 using Prometheus.Devices.Common.Factories;
+using Prometheus.Devices.Test.App;
 
 class Program
 {
@@ -28,6 +29,7 @@ class Program
         Console.WriteLine("3. Office Printer (Windows/Linux)");
         Console.WriteLine("4. Scanner (Windows/Linux)");
         Console.WriteLine("5. Health Check all devices");
+        Console.WriteLine("6. Load devices from appsettings.json");
 
         bool isRunning = true;
 
@@ -55,13 +57,16 @@ class Program
                 await TestScannerAsync();
                 break;
                 case "5":
-                await TestHealthCheckAsync();
-                break;
+                    await TestHealthCheckAsync();
+                    break;
+                case "6":
+                    await LoadDevicesFromConfigAsync();
+                    break;
                 default:
-                Console.WriteLine("Invalid choice. Exiting.");
-                await Task.Delay(1000);
-                isRunning = false;
-                break;
+                    Console.WriteLine("Invalid choice. Exiting.");
+                    await Task.Delay(1000);
+                    isRunning = false;
+                    break;
             }
         }
 
@@ -453,6 +458,54 @@ class Program
         catch (Exception ex)
         {
             Console.WriteLine($"Scanner error: {ex.Message}");
+            Console.WriteLine($"StackTrace: {ex.StackTrace}");
+        }
+    }
+
+    private static async Task LoadDevicesFromConfigAsync()
+    {
+        Console.WriteLine();
+        Console.WriteLine("=== LOAD DEVICES FROM CONFIGURATION ===");
+        Console.WriteLine();
+
+        try
+        {
+            var configuration = _serviceProvider.GetRequiredService<IConfiguration>();
+            
+            Console.WriteLine("Loading devices from appsettings.json...");
+            DeviceConfigurationExample.LoadDevicesFromConfiguration(configuration, _deviceManager);
+
+            Console.WriteLine();
+            Console.WriteLine("Do you want to connect to all loaded devices? (y/n): ");
+            if (Console.ReadLine()?.ToLower() == "y")
+            {
+                await DeviceConfigurationExample.ConnectAllDevicesAsync(_deviceManager);
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("What would you like to test?");
+            Console.WriteLine("1. Test all printers");
+            Console.WriteLine("2. Capture from all cameras");
+            Console.WriteLine("3. Skip");
+            Console.Write("Your choice: ");
+
+            var choice = Console.ReadLine();
+            switch (choice)
+            {
+                case "1":
+                    await DeviceConfigurationExample.TestAllPrintersAsync(_deviceManager);
+                    break;
+                case "2":
+                    await DeviceConfigurationExample.CaptureFromAllCamerasAsync(_deviceManager);
+                    break;
+            }
+
+            Console.WriteLine();
+            Console.WriteLine("✓ Configuration example completed");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Configuration error: {ex.Message}");
             Console.WriteLine($"StackTrace: {ex.StackTrace}");
         }
     }
