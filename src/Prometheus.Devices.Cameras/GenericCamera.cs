@@ -4,7 +4,7 @@ using Prometheus.Devices.Core.Interfaces;
 namespace DeviceWrappers.Devices.Camera
 {
     /// <summary>
-    /// Общая реализация камеры
+    /// Generic camera implementation
     /// </summary>
     public class GenericCamera : BaseDevice, ICamera
     {
@@ -35,27 +35,27 @@ namespace DeviceWrappers.Devices.Camera
 
         protected override async Task OnInitializeAsync(CancellationToken cancellationToken)
         {
-            // Отправляем команду инициализации камере
+            // Send initialization command to camera
             byte[] initCommand = System.Text.Encoding.ASCII.GetBytes("INIT\r\n");
             await Connection.SendAsync(initCommand, cancellationToken);
 
-            // Ожидаем ответа
+            // Wait for response
             await Task.Delay(500, cancellationToken);
 
-            // Настраиваем параметры по умолчанию
+            // Configure default parameters
             await ApplySettingsAsync(cancellationToken);
         }
 
         protected override async Task<DeviceInfo> OnGetDeviceInfoAsync(CancellationToken cancellationToken)
         {
-            // Запрашиваем информацию об устройстве
+            // Request device information
             byte[] command = System.Text.Encoding.ASCII.GetBytes("GET_INFO\r\n");
             await Connection.SendAsync(command, cancellationToken);
 
             byte[] response = await Connection.ReceiveAsync(1024, cancellationToken);
             string responseStr = System.Text.Encoding.ASCII.GetString(response);
 
-            // Парсим ответ (упрощенный вариант)
+            // Parse response (simplified)
             return new DeviceInfo
             {
                 DeviceId = DeviceId,
@@ -88,15 +88,15 @@ namespace DeviceWrappers.Devices.Camera
             {
                 SetStatus(DeviceStatus.Busy, "Захват кадра...");
 
-                // Отправляем команду захвата кадра
+                // Send frame capture command
                 byte[] captureCommand = System.Text.Encoding.ASCII.GetBytes("CAPTURE\r\n");
                 await Connection.SendAsync(captureCommand, cancellationToken);
 
-                // Получаем размер изображения
+                // Get image size
                 byte[] sizeData = await Connection.ReceiveAsync(4, cancellationToken);
                 int imageSize = BitConverter.ToInt32(sizeData, 0);
 
-                // Получаем данные изображения
+                // Get image data
                 byte[] imageData = new byte[imageSize];
                 int totalReceived = 0;
 
@@ -138,11 +138,11 @@ namespace DeviceWrappers.Devices.Camera
                 _streamingCts = new CancellationTokenSource();
                 _isStreaming = true;
 
-                // Отправляем команду начала потоковой передачи
+                // Send stream start command
                 byte[] streamCommand = System.Text.Encoding.ASCII.GetBytes("START_STREAM\r\n");
                 await Connection.SendAsync(streamCommand, cancellationToken);
 
-                // Запускаем фоновую задачу для получения кадров
+                // Start background task for receiving frames
                 _ = Task.Run(async () => await StreamingLoopAsync(_streamingCts.Token), _streamingCts.Token);
 
                 return true;
@@ -165,7 +165,7 @@ namespace DeviceWrappers.Devices.Camera
                 _streamingCts?.Cancel();
                 _isStreaming = false;
 
-                // Отправляем команду остановки потоковой передачи
+                // Send stream stop command
                 byte[] stopCommand = System.Text.Encoding.ASCII.GetBytes("STOP_STREAM\r\n");
                 await Connection.SendAsync(stopCommand, cancellationToken);
 
@@ -182,7 +182,7 @@ namespace DeviceWrappers.Devices.Camera
         {
             ThrowIfNotReady();
 
-            // В реальной реализации эти данные приходят от устройства
+            // In real implementation, this data comes from the device
             return new[]
             {
                 new Resolution(640, 480),
@@ -231,7 +231,7 @@ namespace DeviceWrappers.Devices.Camera
                     break;
                 }
 
-                // Задержка для соблюдения частоты кадров
+                // Delay to maintain frame rate
                 int delayMs = 1000 / Settings.FrameRate;
                 await Task.Delay(delayMs, cancellationToken);
             }
@@ -241,7 +241,7 @@ namespace DeviceWrappers.Devices.Camera
 
         private async Task ApplySettingsAsync(CancellationToken cancellationToken)
         {
-            // Отправляем настройки камере
+            // Send settings to camera
             string settingsCommand = $"SET_RESOLUTION:{Settings.Resolution.Width}x{Settings.Resolution.Height}\r\n" +
                                    $"SET_FPS:{Settings.FrameRate}\r\n" +
                                    $"SET_BRIGHTNESS:{Settings.Brightness}\r\n";

@@ -7,7 +7,7 @@ namespace Prometheus.Devices.Common.Platform.Windows
     {
         public Task<string[]> GetAvailableScannersAsync(CancellationToken cancellationToken = default)
         {
-            // Mock - для реальной работы требуется COM reference на WIA
+            // Mock - for real work requires COM reference to WIA
             return Task.FromResult(new[] { "WIA Scanner (Mock - add COM reference)" });
         }
 

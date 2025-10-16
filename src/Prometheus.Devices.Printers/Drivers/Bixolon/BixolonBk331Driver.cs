@@ -4,8 +4,8 @@ using Prometheus.Devices.Printers.Drivers.EscPos;
 namespace Prometheus.Devices.Printers.Drivers.Bixolon
 {
     /// <summary>
-    /// Драйвер для Bixolon BK3-31 (на основе ESC/POS с особенностями).
-    /// Детали команд: docs\Bixolon BK3-31 Datasheet.pdf
+    /// Driver for Bixolon BK3-31 (ESC/POS based with specific features).
+    /// Command details: docs\Bixolon BK3-31 Datasheet.pdf
     /// </summary>
     public class BixolonBk331Driver : EscPosDriver
     {
@@ -16,7 +16,7 @@ namespace Prometheus.Devices.Printers.Drivers.Bixolon
 
         public override byte[] BuildSetCodepage(int codepageId)
         {
-            // ESC t n, для BK3-31: 17 = PC866 кириллица
+            // ESC t n, for BK3-31: 17 = PC866 Cyrillic
             return base.BuildSetCodepage(codepageId);
         }
 

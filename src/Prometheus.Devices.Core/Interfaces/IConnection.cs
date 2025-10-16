@@ -1,53 +1,53 @@
 namespace Prometheus.Devices.Core.Interfaces
 {
     /// <summary>
-    /// Базовый интерфейс для всех типов подключений к устройствам
+    /// Base interface for all types of device connections
     /// </summary>
     public interface IConnection : IDisposable
     {
         /// <summary>
-        /// Статус подключения
+        /// Connection status
         /// </summary>
         ConnectionStatus Status { get; }
 
         /// <summary>
-        /// Информация о подключении
+        /// Connection information
         /// </summary>
         string ConnectionInfo { get; }
 
         /// <summary>
-        /// Событие изменения статуса подключения
+        /// Connection status changed event
         /// </summary>
         event EventHandler<ConnectionStatusChangedEventArgs> StatusChanged;
 
         /// <summary>
-        /// Открыть подключение
+        /// Open connection
         /// </summary>
         Task OpenAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Закрыть подключение
+        /// Close connection
         /// </summary>
         Task CloseAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Отправить данные
+        /// Send data
         /// </summary>
         Task<int> SendAsync(byte[] data, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Получить данные
+        /// Receive data
         /// </summary>
         Task<byte[]> ReceiveAsync(int bufferSize = 4096, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Проверить доступность подключения
+        /// Check connection availability
         /// </summary>
         Task<bool> PingAsync(CancellationToken cancellationToken = default);
     }
 
     /// <summary>
-    /// Статус подключения
+    /// Connection status
     /// </summary>
     public enum ConnectionStatus
     {
@@ -59,7 +59,7 @@ namespace Prometheus.Devices.Core.Interfaces
     }
 
     /// <summary>
-    /// Аргументы события изменения статуса
+    /// Connection status changed event arguments
     /// </summary>
     public class ConnectionStatusChangedEventArgs : EventArgs
     {
@@ -69,4 +69,3 @@ namespace Prometheus.Devices.Core.Interfaces
         public Exception Error { get; set; }
     }
 }
-

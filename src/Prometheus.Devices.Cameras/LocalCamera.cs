@@ -6,7 +6,7 @@ using Prometheus.Devices.Core.Interfaces;
 namespace DeviceWrappers.Devices.Camera
 {
     /// <summary>
-    /// Локальная (встроенная/USB) камера через OpenCvSharp VideoCapture
+    /// Local (built-in/USB) camera via OpenCvSharp VideoCapture
     /// </summary>
     public class LocalCamera : BaseDevice, ICamera
     {
@@ -91,7 +91,7 @@ namespace DeviceWrappers.Devices.Camera
 
         public Task<Resolution[]> GetSupportedResolutionsAsync(CancellationToken cancellationToken = default)
         {
-            // Часто поддерживаются стандартные разрешения; точный список зависит от драйвера
+            // Standard resolutions are often supported; exact list depends on driver
             var common = new[]
             {
                 new Resolution(640, 480),

@@ -3,7 +3,7 @@ using System.Text;
 namespace DeviceWrappers.Utils.Logging
 {
     /// <summary>
-    /// Логгер с записью в файл
+    /// File logger implementation
     /// </summary>
     public class FileLogger : IDeviceLogger
     {
@@ -18,7 +18,7 @@ namespace DeviceWrappers.Utils.Logging
             _logFilePath = logFilePath;
             _minLevel = minLevel;
 
-            // Создаем директорию если не существует
+            // Create directory if it doesn't exist
             var directory = Path.GetDirectoryName(logFilePath);
             if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
             {
@@ -78,7 +78,7 @@ namespace DeviceWrappers.Utils.Logging
                 }
                 catch
                 {
-                    // Не можем залогировать ошибку логирования
+                    // Cannot log logging error
                 }
             }
         }

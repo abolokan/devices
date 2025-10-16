@@ -3,7 +3,7 @@ using Prometheus.Devices.Core.Connections;
 namespace DeviceWrappers.Devices.Printer
 {
     /// <summary>
-    /// USB принтер
+    /// USB printer
     /// </summary>
     public class UsbPrinter : GenericPrinter
     {

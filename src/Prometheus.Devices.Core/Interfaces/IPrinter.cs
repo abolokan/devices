@@ -1,58 +1,58 @@
 namespace Prometheus.Devices.Core.Interfaces
 {
     /// <summary>
-    /// Интерфейс для работы с принтерами
+    /// Interface for working with printers
     /// </summary>
     public interface IPrinter : IDevice
     {
         /// <summary>
-        /// Текущие настройки принтера
+        /// Current printer settings
         /// </summary>
         PrinterSettings Settings { get; set; }
 
         /// <summary>
-        /// Статус принтера
+        /// Printer status
         /// </summary>
         PrinterStatus PrinterStatus { get; }
 
         /// <summary>
-        /// Событие изменения статуса печати
+        /// Print job status changed event
         /// </summary>
         event EventHandler<PrintJobStatusChangedEventArgs> PrintJobStatusChanged;
 
         /// <summary>
-        /// Напечатать документ
+        /// Print document
         /// </summary>
         Task<PrintJob> PrintAsync(byte[] data, PrintOptions options = null, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Напечатать текст
+        /// Print text
         /// </summary>
         Task<PrintJob> PrintTextAsync(string text, PrintOptions options = null, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Напечатать файл
+        /// Print file
         /// </summary>
         Task<PrintJob> PrintFileAsync(string filePath, PrintOptions options = null, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Отменить задание печати
+        /// Cancel print job
         /// </summary>
         Task<bool> CancelPrintJobAsync(string jobId, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Получить статус задания печати
+        /// Get print job status
         /// </summary>
         Task<PrintJobStatus> GetPrintJobStatusAsync(string jobId, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Получить уровень расходных материалов
+        /// Get consumables level
         /// </summary>
         Task<ConsumablesLevel> GetConsumablesLevelAsync(CancellationToken cancellationToken = default);
     }
 
     /// <summary>
-    /// Настройки принтера
+    /// Printer settings
     /// </summary>
     public class PrinterSettings
     {
@@ -63,7 +63,7 @@ namespace Prometheus.Devices.Core.Interfaces
     }
 
     /// <summary>
-    /// Опции печати
+    /// Print options
     /// </summary>
     public class PrintOptions
     {
@@ -75,7 +75,7 @@ namespace Prometheus.Devices.Core.Interfaces
     }
 
     /// <summary>
-    /// Размер бумаги
+    /// Paper size
     /// </summary>
     public enum PaperSize
     {
@@ -87,7 +87,7 @@ namespace Prometheus.Devices.Core.Interfaces
     }
 
     /// <summary>
-    /// Качество печати
+    /// Print quality
     /// </summary>
     public enum PrintQuality
     {
@@ -98,7 +98,7 @@ namespace Prometheus.Devices.Core.Interfaces
     }
 
     /// <summary>
-    /// Статус принтера
+    /// Printer status
     /// </summary>
     public enum PrinterStatus
     {
@@ -111,7 +111,7 @@ namespace Prometheus.Devices.Core.Interfaces
     }
 
     /// <summary>
-    /// Задание печати
+    /// Print job
     /// </summary>
     public class PrintJob
     {
@@ -124,7 +124,7 @@ namespace Prometheus.Devices.Core.Interfaces
     }
 
     /// <summary>
-    /// Статус задания печати
+    /// Print job status
     /// </summary>
     public enum PrintJobStatus
     {
@@ -136,7 +136,7 @@ namespace Prometheus.Devices.Core.Interfaces
     }
 
     /// <summary>
-    /// Уровень расходных материалов
+    /// Consumables level
     /// </summary>
     public class ConsumablesLevel
     {
@@ -146,7 +146,7 @@ namespace Prometheus.Devices.Core.Interfaces
     }
 
     /// <summary>
-    /// Аргументы события изменения статуса печати
+    /// Print job status changed event arguments
     /// </summary>
     public class PrintJobStatusChangedEventArgs : EventArgs
     {
@@ -156,4 +156,3 @@ namespace Prometheus.Devices.Core.Interfaces
         public int Progress { get; set; }
     }
 }
-

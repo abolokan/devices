@@ -3,7 +3,7 @@ using Prometheus.Devices.Core.Interfaces;
 namespace Prometheus.Devices.Core.Connections
 {
     /// <summary>
-    /// Базовая абстрактная реализация подключения
+    /// Base abstract connection implementation
     /// </summary>
     public abstract class BaseConnection : IConnection
     {
@@ -73,4 +73,3 @@ namespace Prometheus.Devices.Core.Connections
         }
     }
 }
-

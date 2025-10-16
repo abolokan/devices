@@ -5,7 +5,7 @@ using Prometheus.Devices.Core.Interfaces;
 namespace DeviceWrappers.Devices.Printer
 {
     /// <summary>
-    /// Общая реализация принтера
+    /// Generic printer implementation
     /// </summary>
     public class GenericPrinter : BaseDevice, IPrinter
     {
@@ -48,19 +48,19 @@ namespace DeviceWrappers.Devices.Printer
 
         protected override async Task OnInitializeAsync(CancellationToken cancellationToken)
         {
-            // Инициализация принтера
+            // Initialize printer
             byte[] initCommand = Encoding.ASCII.GetBytes("@PJL INITIALIZE\r\n");
             await Connection.SendAsync(initCommand, cancellationToken);
 
             await Task.Delay(500, cancellationToken);
 
-            // Проверка статуса
+            // Check status
             await UpdatePrinterStatusAsync(cancellationToken);
         }
 
         protected override async Task<DeviceInfo> OnGetDeviceInfoAsync(CancellationToken cancellationToken)
         {
-            // Запрос информации об устройстве
+            // Request device information
             byte[] command = Encoding.ASCII.GetBytes("@PJL INFO ID\r\n");
             await Connection.SendAsync(command, cancellationToken);
 
@@ -81,7 +81,7 @@ namespace DeviceWrappers.Devices.Printer
 
         protected override async Task OnResetAsync(CancellationToken cancellationToken)
         {
-            // Отмена всех заданий
+            // Cancel all jobs
             lock (_jobsLock)
             {
                 foreach (var job in _printJobs.Values)
@@ -94,7 +94,7 @@ namespace DeviceWrappers.Devices.Printer
                 _printJobs.Clear();
             }
 
-            // Сброс принтера
+            // Reset printer
             byte[] resetCommand = Encoding.ASCII.GetBytes("@PJL RESET\r\n");
             await Connection.SendAsync(resetCommand, cancellationToken);
             await Task.Delay(2000, cancellationToken);
@@ -113,7 +113,7 @@ namespace DeviceWrappers.Devices.Printer
             {
                 SetStatus(DeviceStatus.Busy, "Подготовка к печати...");
 
-                // Создание задания печати
+                // Create print job
                 var printJob = new PrintJob
                 {
                     JobId = Guid.NewGuid().ToString(),
@@ -129,7 +129,7 @@ namespace DeviceWrappers.Devices.Printer
                     _printJobs[printJob.JobId] = printJob;
                 }
 
-                // Запуск печати в фоновом режиме
+                // Start printing in background
                 _ = Task.Run(async () => await ExecutePrintJobAsync(printJob, data, options, cancellationToken), cancellationToken);
 
                 return printJob;
@@ -179,7 +179,7 @@ namespace DeviceWrappers.Devices.Printer
                 job.Status = PrintJobStatus.Cancelled;
             }
 
-            // Отправка команды отмены
+            // Send cancel command
             byte[] cancelCommand = Encoding.ASCII.GetBytes($"@PJL CANCEL {jobId}\r\n");
             await Connection.SendAsync(cancelCommand, cancellationToken);
 
@@ -214,14 +214,14 @@ namespace DeviceWrappers.Devices.Printer
         {
             ThrowIfNotReady();
 
-            // Запрос уровня расходных материалов
+            // Request consumables level
             byte[] command = Encoding.ASCII.GetBytes("@PJL INFO SUPPLIES\r\n");
             await Connection.SendAsync(command, cancellationToken);
 
             byte[] response = await Connection.ReceiveAsync(1024, cancellationToken);
             string responseStr = Encoding.ASCII.GetString(response);
 
-            // Парсинг ответа (упрощенный вариант)
+            // Parse response (simplified)
             return new ConsumablesLevel
             {
                 TonerLevel = 85,
@@ -245,7 +245,7 @@ namespace DeviceWrappers.Devices.Printer
                     Progress = 0
                 });
 
-                // Формирование команд печати
+                // Build print commands
                 StringBuilder printCommands = new StringBuilder();
                 printCommands.AppendLine($"@PJL JOB NAME=\"{job.DocumentName}\"");
                 printCommands.AppendLine($"@PJL SET COPIES={options.Copies}");
@@ -256,7 +256,7 @@ namespace DeviceWrappers.Devices.Printer
                 byte[] header = Encoding.ASCII.GetBytes(printCommands.ToString());
                 await Connection.SendAsync(header, cancellationToken);
 
-                // Отправка данных порциями с обновлением прогресса
+                // Send data in chunks with progress updates
                 int chunkSize = 8192;
                 int totalSent = 0;
 
@@ -272,7 +272,7 @@ namespace DeviceWrappers.Devices.Printer
                     await Connection.SendAsync(chunk, cancellationToken);
                     totalSent += size;
 
-                    // Обновление прогресса
+                    // Update progress
                     int printedPages = (int)((double)totalSent / data.Length * job.TotalPages);
                     if (printedPages > job.PrintedPages)
                     {
@@ -286,10 +286,10 @@ namespace DeviceWrappers.Devices.Printer
                         });
                     }
 
-                    await Task.Delay(50, cancellationToken); // Имитация времени печати
+                    await Task.Delay(50, cancellationToken); // Simulate print time
                 }
 
-                // Завершение задания
+                // Complete job
                 byte[] footer = Encoding.ASCII.GetBytes("@PJL EOJ\r\n");
                 await Connection.SendAsync(footer, cancellationToken);
 
@@ -334,21 +334,21 @@ namespace DeviceWrappers.Devices.Printer
             byte[] response = await Connection.ReceiveAsync(512, cancellationToken);
             string statusStr = Encoding.ASCII.GetString(response);
 
-            // Парсинг статуса (упрощенно)
+            // Parse status (simplified)
             PrinterStatus = PrinterStatus.Idle;
         }
 
         private int EstimatePages(byte[] data, PrintOptions options)
         {
-            // Упрощенная оценка количества страниц
-            // В реальности нужно анализировать формат документа
+            // Simplified page count estimation
+            // In reality, need to analyze document format
             int estimatedPages = Math.Max(1, data.Length / 4096);
             return estimatedPages;
         }
 
         private void OnSettingsChanged()
         {
-            // Применение настроек
+            // Apply settings
         }
 
         protected virtual void OnPrintJobStatusChanged(PrintJobStatusChangedEventArgs e)

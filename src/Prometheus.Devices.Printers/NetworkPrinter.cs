@@ -3,7 +3,7 @@ using Prometheus.Devices.Core.Connections;
 namespace DeviceWrappers.Devices.Printer
 {
     /// <summary>
-    /// Сетевой принтер (подключение через TCP)
+    /// Network printer (TCP connection)
     /// </summary>
     public class NetworkPrinter : GenericPrinter
     {

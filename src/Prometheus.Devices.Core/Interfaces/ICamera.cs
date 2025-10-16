@@ -1,48 +1,48 @@
 namespace Prometheus.Devices.Core.Interfaces
 {
     /// <summary>
-    /// Интерфейс для работы с камерами
+    /// Interface for working with cameras
     /// </summary>
     public interface ICamera : IDevice
     {
         /// <summary>
-        /// Текущие настройки камеры
+        /// Current camera settings
         /// </summary>
         CameraSettings Settings { get; set; }
 
         /// <summary>
-        /// Событие получения нового кадра
+        /// Frame captured event
         /// </summary>
         event EventHandler<FrameCapturedEventArgs> FrameCaptured;
 
         /// <summary>
-        /// Захватить одиночный кадр
+        /// Capture single frame
         /// </summary>
         Task<CameraFrame> CaptureFrameAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Начать непрерывную съемку
+        /// Start continuous capture
         /// </summary>
         Task<bool> StartStreamingAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Остановить непрерывную съемку
+        /// Stop continuous capture
         /// </summary>
         Task<bool> StopStreamingAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Получить поддерживаемые разрешения
+        /// Get supported resolutions
         /// </summary>
         Task<Resolution[]> GetSupportedResolutionsAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Сохранить кадр в файл
+        /// Save frame to file
         /// </summary>
         Task<bool> SaveFrameAsync(CameraFrame frame, string filePath, CancellationToken cancellationToken = default);
     }
 
     /// <summary>
-    /// Настройки камеры
+    /// Camera settings
     /// </summary>
     public class CameraSettings
     {
@@ -57,7 +57,7 @@ namespace Prometheus.Devices.Core.Interfaces
     }
 
     /// <summary>
-    /// Разрешение изображения
+    /// Image resolution
     /// </summary>
     public class Resolution
     {
@@ -74,7 +74,7 @@ namespace Prometheus.Devices.Core.Interfaces
     }
 
     /// <summary>
-    /// Формат изображения
+    /// Image format
     /// </summary>
     public enum ImageFormat
     {
@@ -85,7 +85,7 @@ namespace Prometheus.Devices.Core.Interfaces
     }
 
     /// <summary>
-    /// Кадр с камеры
+    /// Camera frame
     /// </summary>
     public class CameraFrame
     {
@@ -97,11 +97,10 @@ namespace Prometheus.Devices.Core.Interfaces
     }
 
     /// <summary>
-    /// Аргументы события захвата кадра
+    /// Frame captured event arguments
     /// </summary>
     public class FrameCapturedEventArgs : EventArgs
     {
         public CameraFrame Frame { get; set; }
     }
 }
-

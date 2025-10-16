@@ -1,7 +1,7 @@
 namespace DeviceWrappers.Utils.Logging
 {
     /// <summary>
-    /// Простая реализация логгера в консоль
+    /// Simple console logger implementation
     /// </summary>
     public class ConsoleLogger : IDeviceLogger
     {

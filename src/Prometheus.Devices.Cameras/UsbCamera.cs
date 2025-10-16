@@ -3,7 +3,7 @@ using Prometheus.Devices.Core.Connections;
 namespace DeviceWrappers.Devices.Camera
 {
     /// <summary>
-    /// USB-камера
+    /// USB camera
     /// </summary>
     public class UsbCamera : GenericCamera
     {
@@ -25,4 +25,3 @@ namespace DeviceWrappers.Devices.Camera
         }
     }
 }
-

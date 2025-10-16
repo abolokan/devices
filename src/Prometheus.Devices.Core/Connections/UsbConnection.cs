@@ -3,9 +3,9 @@ using Prometheus.Devices.Core.Interfaces;
 namespace Prometheus.Devices.Core.Connections
 {
     /// <summary>
-    /// Реализация USB подключения
-    /// Примечание: Для работы с USB необходимо использовать библиотеки типа LibUsbDotNet или WinUSB
-    /// Данная реализация представляет базовую структуру
+    /// USB connection implementation
+    /// Note: For USB work, libraries like LibUsbDotNet or WinUSB are required
+    /// This implementation represents the basic structure
     /// </summary>
     public class UsbConnection : BaseConnection
     {
@@ -13,8 +13,8 @@ namespace Prometheus.Devices.Core.Connections
         private readonly int _productId;
         private readonly string _serialNumber;
         
-        // Здесь должны быть реальные объекты USB библиотеки
-        // Например: private UsbDevice _usbDevice; (из LibUsbDotNet)
+        // Here should be real USB library objects
+        // For example: private UsbDevice _usbDevice; (from LibUsbDotNet)
         private object _usbDevice;
         private object _readEndpoint;
         private object _writeEndpoint;
@@ -43,10 +43,10 @@ namespace Prometheus.Devices.Core.Connections
             {
                 try
                 {
-                    SetStatus(ConnectionStatus.Connecting, "Поиск USB устройства...");
+                    SetStatus(ConnectionStatus.Connecting, "Searching for USB device...");
 
-                    // Псевдокод для работы с USB
-                    // В реальности здесь будет код типа:
+                    // Pseudocode for USB work
+                    // In reality, there will be code like:
                     /*
                     var devices = UsbDevice.AllDevices;
                     _usbDevice = devices.FirstOrDefault(d => 
@@ -55,27 +55,27 @@ namespace Prometheus.Devices.Core.Connections
                         (string.IsNullOrEmpty(_serialNumber) || d.SerialNumber == _serialNumber));
 
                     if (_usbDevice == null)
-                        throw new ConnectionException("USB устройство не найдено");
+                        throw new ConnectionException("USB device not found");
 
                     if (!_usbDevice.Open())
-                        throw new ConnectionException("Не удалось открыть USB устройство");
+                        throw new ConnectionException("Failed to open USB device");
 
-                    // Настройка конечных точек
+                    // Configure endpoints
                     _writeEndpoint = _usbDevice.OpenEndpointWriter(WriteEndpointID.Ep01);
                     _readEndpoint = _usbDevice.OpenEndpointReader(ReadEndpointID.Ep01);
                     */
 
-                    // Для демонстрации создаем заглушку
+                    // For demonstration, create stubs
                     _usbDevice = new object();
                     _writeEndpoint = new object();
                     _readEndpoint = new object();
 
-                    SetStatus(ConnectionStatus.Connected, "USB устройство подключено");
+                    SetStatus(ConnectionStatus.Connected, "USB device connected");
                 }
                 catch (Exception ex)
                 {
-                    SetStatus(ConnectionStatus.Error, "Ошибка подключения USB", ex);
-                    throw new ConnectionException($"Не удалось подключиться к USB устройству VID={_vendorId:X4}, PID={_productId:X4}", ex);
+                    SetStatus(ConnectionStatus.Error, "USB connection error", ex);
+                    throw new ConnectionException($"Failed to connect to USB device VID={_vendorId:X4}, PID={_productId:X4}", ex);
                 }
             }, cancellationToken);
         }
@@ -89,9 +89,9 @@ namespace Prometheus.Devices.Core.Connections
             {
                 try
                 {
-                    SetStatus(ConnectionStatus.Disconnecting, "Отключение USB устройства...");
+                    SetStatus(ConnectionStatus.Disconnecting, "Disconnecting USB device...");
 
-                    // Псевдокод закрытия USB
+                    // Pseudocode for USB closing
                     /*
                     _writeEndpoint?.Dispose();
                     _readEndpoint?.Dispose();
@@ -102,11 +102,11 @@ namespace Prometheus.Devices.Core.Connections
                     _readEndpoint = null;
                     _usbDevice = null;
 
-                    SetStatus(ConnectionStatus.Disconnected, "USB устройство отключено");
+                    SetStatus(ConnectionStatus.Disconnected, "USB device disconnected");
                 }
                 catch (Exception ex)
                 {
-                    SetStatus(ConnectionStatus.Error, "Ошибка при отключении USB", ex);
+                    SetStatus(ConnectionStatus.Error, "USB disconnection error", ex);
                     throw;
                 }
             }, cancellationToken);
@@ -117,30 +117,30 @@ namespace Prometheus.Devices.Core.Connections
             ThrowIfDisposed();
 
             if (Status != ConnectionStatus.Connected)
-                throw new InvalidOperationException("USB подключение не установлено");
+                throw new InvalidOperationException("USB connection not established");
 
             if (data == null || data.Length == 0)
-                throw new ArgumentException("Данные не могут быть пустыми", nameof(data));
+                throw new ArgumentException("Data cannot be empty", nameof(data));
 
             return await Task.Run(() =>
             {
                 try
                 {
-                    // Псевдокод отправки данных по USB
+                    // Pseudocode for sending data via USB
                     /*
                     ErrorCode ec = _writeEndpoint.Write(data, 5000, out int transferred);
                     if (ec != ErrorCode.None)
-                        throw new ConnectionException($"Ошибка записи USB: {ec}");
+                        throw new ConnectionException($"USB write error: {ec}");
                     return transferred;
                     */
 
-                    // Заглушка
+                    // Stub
                     return data.Length;
                 }
                 catch (Exception ex)
                 {
-                    SetStatus(ConnectionStatus.Error, "Ошибка отправки данных по USB", ex);
-                    throw new ConnectionException("Ошибка при отправке данных по USB", ex);
+                    SetStatus(ConnectionStatus.Error, "USB send data error", ex);
+                    throw new ConnectionException("Error sending data via USB", ex);
                 }
             }, cancellationToken);
         }
@@ -150,32 +150,32 @@ namespace Prometheus.Devices.Core.Connections
             ThrowIfDisposed();
 
             if (Status != ConnectionStatus.Connected)
-                throw new InvalidOperationException("USB подключение не установлено");
+                throw new InvalidOperationException("USB connection not established");
 
             return await Task.Run(() =>
             {
                 try
                 {
-                    // Псевдокод получения данных по USB
+                    // Pseudocode for receiving data via USB
                     /*
                     byte[] buffer = new byte[bufferSize];
                     ErrorCode ec = _readEndpoint.Read(buffer, 5000, out int transferred);
                     
                     if (ec != ErrorCode.None)
-                        throw new ConnectionException($"Ошибка чтения USB: {ec}");
+                        throw new ConnectionException($"USB read error: {ec}");
 
                     byte[] result = new byte[transferred];
                     Array.Copy(buffer, result, transferred);
                     return result;
                     */
 
-                    // Заглушка
+                    // Stub
                     return Array.Empty<byte>();
                 }
                 catch (Exception ex)
                 {
-                    SetStatus(ConnectionStatus.Error, "Ошибка получения данных по USB", ex);
-                    throw new ConnectionException("Ошибка при получении данных по USB", ex);
+                    SetStatus(ConnectionStatus.Error, "USB receive data error", ex);
+                    throw new ConnectionException("Error receiving data via USB", ex);
                 }
             }, cancellationToken);
         }
@@ -187,7 +187,7 @@ namespace Prometheus.Devices.Core.Connections
 
             try
             {
-                // Псевдокод проверки подключения
+                // Pseudocode for connection check
                 /*
                 return _usbDevice.IsOpen;
                 */
@@ -204,7 +204,7 @@ namespace Prometheus.Devices.Core.Connections
             if (_disposed)
                 return;
 
-            // Освобождение USB ресурсов
+            // Release USB resources
             _writeEndpoint = null;
             _readEndpoint = null;
             _usbDevice = null;
@@ -213,4 +213,3 @@ namespace Prometheus.Devices.Core.Connections
         }
     }
 }
-

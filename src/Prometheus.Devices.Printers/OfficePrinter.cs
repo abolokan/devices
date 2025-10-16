@@ -6,7 +6,7 @@ using Prometheus.Devices.Core.Platform;
 namespace DeviceWrappers.Devices.Printer
 {
     /// <summary>
-    /// Офисный принтер (лазерный/струйный) через платформо-специфичные API
+    /// Office printer (laser/inkjet) via platform-specific API
     /// </summary>
     public class OfficePrinter : BaseDevice, IPrinter
     {
@@ -28,7 +28,7 @@ namespace DeviceWrappers.Devices.Printer
         public event EventHandler<PrintJobStatusChangedEventArgs> PrintJobStatusChanged;
 
         public OfficePrinter(string deviceId, string deviceName, string systemPrinterName, IPlatformPrinter platformPrinter)
-            : base(deviceId, deviceName, new NullConnection()) // Офисные принтеры не используют сетевое подключение
+            : base(deviceId, deviceName, new NullConnection()) // Office printers don't use network connection
         {
             _systemPrinterName = systemPrinterName ?? throw new ArgumentNullException(nameof(systemPrinterName));
             _platformPrinter = platformPrinter ?? throw new ArgumentNullException(nameof(platformPrinter));

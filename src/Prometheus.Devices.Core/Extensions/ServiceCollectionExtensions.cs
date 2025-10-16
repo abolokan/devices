@@ -9,7 +9,7 @@ namespace Prometheus.Devices.Core.Extensions
     public static class ServiceCollectionExtensions
     {
         /// <summary>
-        /// Добавить Prometheus.Devices с конфигурацией
+        /// Add Prometheus.Devices with configuration
         /// </summary>
         public static IServiceCollection AddPrometheusDevicesCore(
             this IServiceCollection services,
@@ -23,7 +23,7 @@ namespace Prometheus.Devices.Core.Extensions
         }
         
         /// <summary>
-        /// Добавить Prometheus.Devices без конфигурации
+        /// Add Prometheus.Devices without configuration
         /// </summary>
         public static IServiceCollection AddPrometheusDevicesCore(this IServiceCollection services)
         {

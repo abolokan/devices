@@ -4,7 +4,7 @@ using Prometheus.Devices.Core.Interfaces;
 namespace Prometheus.Devices.Core.Connections
 {
     /// <summary>
-    /// Реализация Serial (COM-порт) подключения
+    /// Serial (COM port) connection implementation
     /// </summary>
     public class SerialConnection : BaseConnection
     {
@@ -42,7 +42,7 @@ namespace Prometheus.Devices.Core.Connections
             {
                 try
                 {
-                    SetStatus(ConnectionStatus.Connecting, $"Открытие порта {_portName}...");
+                    SetStatus(ConnectionStatus.Connecting, $"Opening port {_portName}...");
 
                     _serialPort = new SerialPort(_portName, _baudRate, _parity, _dataBits, _stopBits)
                     {
@@ -54,12 +54,12 @@ namespace Prometheus.Devices.Core.Connections
 
                     _serialPort.Open();
 
-                    SetStatus(ConnectionStatus.Connected, $"Порт {_portName} открыт");
+                    SetStatus(ConnectionStatus.Connected, $"Port {_portName} opened");
                 }
                 catch (Exception ex)
                 {
-                    SetStatus(ConnectionStatus.Error, "Ошибка открытия COM-порта", ex);
-                    throw new ConnectionException($"Не удалось открыть порт {_portName}", ex);
+                    SetStatus(ConnectionStatus.Error, "Error opening COM port", ex);
+                    throw new ConnectionException($"Failed to open port {_portName}", ex);
                 }
             }, cancellationToken);
         }
@@ -73,7 +73,7 @@ namespace Prometheus.Devices.Core.Connections
             {
                 try
                 {
-                    SetStatus(ConnectionStatus.Disconnecting, "Закрытие COM-порта...");
+                    SetStatus(ConnectionStatus.Disconnecting, "Closing COM port...");
 
                     if (_serialPort != null && _serialPort.IsOpen)
                         _serialPort.Close();
@@ -81,11 +81,11 @@ namespace Prometheus.Devices.Core.Connections
                     _serialPort?.Dispose();
                     _serialPort = null;
 
-                    SetStatus(ConnectionStatus.Disconnected, "COM-порт закрыт");
+                    SetStatus(ConnectionStatus.Disconnected, "COM port closed");
                 }
                 catch (Exception ex)
                 {
-                    SetStatus(ConnectionStatus.Error, "Ошибка при закрытии COM-порта", ex);
+                    SetStatus(ConnectionStatus.Error, "Error closing COM port", ex);
                     throw;
                 }
             }, cancellationToken);
@@ -96,10 +96,10 @@ namespace Prometheus.Devices.Core.Connections
             ThrowIfDisposed();
 
             if (Status != ConnectionStatus.Connected)
-                throw new InvalidOperationException("COM-порт не открыт");
+                throw new InvalidOperationException("COM port is not open");
 
             if (data == null || data.Length == 0)
-                throw new ArgumentException("Данные не могут быть пустыми", nameof(data));
+                throw new ArgumentException("Data cannot be empty", nameof(data));
 
             try
             {
@@ -109,8 +109,8 @@ namespace Prometheus.Devices.Core.Connections
             }
             catch (Exception ex)
             {
-                SetStatus(ConnectionStatus.Error, "Ошибка отправки данных через COM-порт", ex);
-                throw new ConnectionException("Ошибка при отправке данных через COM-порт", ex);
+                SetStatus(ConnectionStatus.Error, "Error sending data through COM port", ex);
+                throw new ConnectionException("Error sending data through COM port", ex);
             }
         }
 
@@ -119,7 +119,7 @@ namespace Prometheus.Devices.Core.Connections
             ThrowIfDisposed();
 
             if (Status != ConnectionStatus.Connected)
-                throw new InvalidOperationException("COM-порт не открыт");
+                throw new InvalidOperationException("COM port is not open");
 
             try
             {
@@ -135,8 +135,8 @@ namespace Prometheus.Devices.Core.Connections
             }
             catch (Exception ex)
             {
-                SetStatus(ConnectionStatus.Error, "Ошибка получения данных через COM-порт", ex);
-                throw new ConnectionException("Ошибка при получении данных через COM-порт", ex);
+                SetStatus(ConnectionStatus.Error, "Error receiving data through COM port", ex);
+                throw new ConnectionException("Error receiving data through COM port", ex);
             }
         }
 
@@ -153,7 +153,7 @@ namespace Prometheus.Devices.Core.Connections
         }
 
         /// <summary>
-        /// Получить список доступных COM-портов
+        /// Get list of available COM ports
         /// </summary>
         public static string[] GetAvailablePorts()
         {
@@ -171,4 +171,3 @@ namespace Prometheus.Devices.Core.Connections
         }
     }
 }
-

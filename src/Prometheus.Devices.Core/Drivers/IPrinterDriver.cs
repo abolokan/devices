@@ -3,40 +3,38 @@ using System.Text;
 namespace Prometheus.Devices.Core.Drivers
 {
     /// <summary>
-    /// Драйвер принтера, формирующий байтовые команды под конкретный протокол/вендора
+    /// Printer driver that builds byte commands for specific protocol/vendor
     /// </summary>
     public interface IPrinterDriver
     {
         /// <summary>
-        /// Инициализировать буфер команд (например, ESC @)
+        /// Initialize command buffer (e.g., ESC @)
         /// </summary>
         byte[] BuildInitialize();
 
         /// <summary>
-        /// Установить кодировку печати (таблица кодов)
+        /// Set print encoding (code table)
         /// </summary>
         byte[] BuildSetCodepage(int codepageId);
 
         /// <summary>
-        /// Печать текста
+        /// Print text
         /// </summary>
         byte[] BuildPrintText(string text, Encoding encoding);
 
         /// <summary>
-        /// Прокрутка на lines строк
+        /// Feed lines
         /// </summary>
         byte[] BuildFeedLines(int lines);
 
         /// <summary>
-        /// Обрезка бумаги (partial = частичная)
+        /// Paper cut (partial = partial cut)
         /// </summary>
         byte[] BuildCut(bool partial);
 
         /// <summary>
-        /// Сырые данные
+        /// Raw data
         /// </summary>
         byte[] BuildRaw(byte[] data);
     }
 }
-
-

@@ -3,7 +3,7 @@ using Prometheus.Devices.Core.Interfaces;
 namespace Prometheus.Devices.Core.Devices
 {
     /// <summary>
-    /// Базовая абстрактная реализация устройства
+    /// Base abstract device implementation
     /// </summary>
     public abstract class BaseDevice : IDevice
     {

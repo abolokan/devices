@@ -4,8 +4,8 @@ using System.IO.Ports;
 namespace DeviceWrappers.Devices.Printer
 {
     /// <summary>
-    /// Принтер с подключением через COM-порт (Serial)
-    /// Часто используется для чековых принтеров
+    /// Printer with COM port (Serial) connection
+    /// Often used for receipt printers
     /// </summary>
     public class SerialPrinter : GenericPrinter
     {
@@ -27,7 +27,7 @@ namespace DeviceWrappers.Devices.Printer
         }
 
         /// <summary>
-        /// Получить список доступных COM-портов
+        /// Get list of available COM ports
         /// </summary>
         public static string[] GetAvailablePorts()
         {

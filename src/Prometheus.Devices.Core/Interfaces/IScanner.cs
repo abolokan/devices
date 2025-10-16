@@ -1,33 +1,33 @@
 namespace Prometheus.Devices.Core.Interfaces
 {
     /// <summary>
-    /// Интерфейс для работы со сканерами
+    /// Interface for working with scanners
     /// </summary>
     public interface IScanner : IDevice
     {
         /// <summary>
-        /// Текущие настройки сканера
+        /// Current scanner settings
         /// </summary>
         ScannerSettings Settings { get; set; }
 
         /// <summary>
-        /// Сканировать изображение
+        /// Scan image
         /// </summary>
         Task<ScannedImage> ScanAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Получить поддерживаемые разрешения
+        /// Get supported resolutions
         /// </summary>
         Task<int[]> GetSupportedResolutionsAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Сохранить отсканированное изображение
+        /// Save scanned image
         /// </summary>
         Task<bool> SaveImageAsync(ScannedImage image, string filePath, CancellationToken cancellationToken = default);
     }
 
     /// <summary>
-    /// Настройки сканера
+    /// Scanner settings
     /// </summary>
     public class ScannerSettings
     {
@@ -39,7 +39,7 @@ namespace Prometheus.Devices.Core.Interfaces
     }
 
     /// <summary>
-    /// Режим цвета сканирования
+    /// Scan color mode
     /// </summary>
     public enum ScanColorMode
     {
@@ -49,7 +49,7 @@ namespace Prometheus.Devices.Core.Interfaces
     }
 
     /// <summary>
-    /// Формат сканирования
+    /// Scan format
     /// </summary>
     public enum ScanFormat
     {
@@ -61,7 +61,7 @@ namespace Prometheus.Devices.Core.Interfaces
     }
 
     /// <summary>
-    /// Отсканированное изображение
+    /// Scanned image
     /// </summary>
     public class ScannedImage
     {
@@ -74,4 +74,3 @@ namespace Prometheus.Devices.Core.Interfaces
         public DateTime Timestamp { get; set; }
     }
 }
-

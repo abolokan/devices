@@ -3,24 +3,23 @@ using Prometheus.Devices.Core.Interfaces;
 namespace Prometheus.Devices.Core.Platform
 {
     /// <summary>
-    /// Платформо-специфичный интерфейс для сканирования
+    /// Platform-specific interface for scanning
     /// </summary>
     public interface IPlatformScanner
     {
         /// <summary>
-        /// Получить список доступных сканеров в системе
+        /// Get list of available scanners in the system
         /// </summary>
         Task<string[]> GetAvailableScannersAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Сканировать изображение
+        /// Scan image
         /// </summary>
         Task<ScannedImage> ScanAsync(string scannerName, ScannerSettings settings, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Проверить доступность сканера
+        /// Check scanner availability
         /// </summary>
         Task<bool> IsScannerAvailableAsync(string scannerName, CancellationToken cancellationToken = default);
     }
 }
-

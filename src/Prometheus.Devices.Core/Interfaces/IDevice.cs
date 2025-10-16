@@ -1,68 +1,68 @@
 namespace Prometheus.Devices.Core.Interfaces
 {
     /// <summary>
-    /// Базовый интерфейс для всех устройств
+    /// Base interface for all devices
     /// </summary>
     public interface IDevice : IDisposable
     {
         /// <summary>
-        /// Уникальный идентификатор устройства
+        /// Unique device identifier
         /// </summary>
         string DeviceId { get; }
 
         /// <summary>
-        /// Название устройства
+        /// Device name
         /// </summary>
         string DeviceName { get; }
 
         /// <summary>
-        /// Тип устройства
+        /// Device type
         /// </summary>
         DeviceType DeviceType { get; }
 
         /// <summary>
-        /// Статус устройства
+        /// Device status
         /// </summary>
         DeviceStatus Status { get; }
 
         /// <summary>
-        /// Подключение к устройству
+        /// Connection to the device
         /// </summary>
         IConnection Connection { get; }
 
         /// <summary>
-        /// Событие изменения статуса устройства
+        /// Device status changed event
         /// </summary>
         event EventHandler<DeviceStatusChangedEventArgs> StatusChanged;
 
         /// <summary>
-        /// Инициализировать устройство
+        /// Initialize device
         /// </summary>
         Task<bool> InitializeAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Подключиться к устройству
+        /// Connect to device
         /// </summary>
         Task<bool> ConnectAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Отключиться от устройства
+        /// Disconnect from device
         /// </summary>
         Task<bool> DisconnectAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Получить информацию об устройстве
+        /// Get device information
         /// </summary>
         Task<DeviceInfo> GetDeviceInfoAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Сбросить устройство
+        /// Reset device
         /// </summary>
         Task<bool> ResetAsync(CancellationToken cancellationToken = default);
     }
 
     /// <summary>
-    /// Тип устройства
+    /// Device type
     /// </summary>
     public enum DeviceType
     {
@@ -76,7 +76,7 @@ namespace Prometheus.Devices.Core.Interfaces
     }
 
     /// <summary>
-    /// Статус устройства
+    /// Device status
     /// </summary>
     public enum DeviceStatus
     {
@@ -89,7 +89,7 @@ namespace Prometheus.Devices.Core.Interfaces
     }
 
     /// <summary>
-    /// Аргументы события изменения статуса устройства
+    /// Device status changed event arguments
     /// </summary>
     public class DeviceStatusChangedEventArgs : EventArgs
     {
@@ -99,7 +99,7 @@ namespace Prometheus.Devices.Core.Interfaces
     }
 
     /// <summary>
-    /// Информация об устройстве
+    /// Device information
     /// </summary>
     public class DeviceInfo
     {
@@ -112,4 +112,3 @@ namespace Prometheus.Devices.Core.Interfaces
         public DeviceType DeviceType { get; set; }
     }
 }
-

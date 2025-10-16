@@ -1,7 +1,7 @@
 namespace DeviceWrappers.Utils.ErrorHandling
 {
     /// <summary>
-    /// Базовое исключение для устройств
+    /// Base exception for devices
     /// </summary>
     public class DeviceException : Exception
     {
@@ -38,7 +38,7 @@ namespace DeviceWrappers.Utils.ErrorHandling
     }
 
     /// <summary>
-    /// Исключение инициализации устройства
+    /// Device initialization exception
     /// </summary>
     public class DeviceInitializationException : DeviceException
     {
@@ -54,7 +54,7 @@ namespace DeviceWrappers.Utils.ErrorHandling
     }
 
     /// <summary>
-    /// Исключение тайм-аута устройства
+    /// Device timeout exception
     /// </summary>
     public class DeviceTimeoutException : DeviceException
     {
@@ -68,7 +68,7 @@ namespace DeviceWrappers.Utils.ErrorHandling
     }
 
     /// <summary>
-    /// Исключение занятости устройства
+    /// Device busy exception
     /// </summary>
     public class DeviceBusyException : DeviceException
     {
@@ -79,7 +79,7 @@ namespace DeviceWrappers.Utils.ErrorHandling
     }
 
     /// <summary>
-    /// Коды ошибок
+    /// Error codes
     /// </summary>
     public enum ErrorCode
     {

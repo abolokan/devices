@@ -3,7 +3,7 @@ using Prometheus.Devices.Core.Connections;
 namespace DeviceWrappers.Devices.Camera
 {
     /// <summary>
-    /// IP-камера (подключение через TCP)
+    /// IP camera (TCP connection)
     /// </summary>
     public class IpCamera : GenericCamera
     {
@@ -25,4 +25,3 @@ namespace DeviceWrappers.Devices.Camera
         }
     }
 }
-

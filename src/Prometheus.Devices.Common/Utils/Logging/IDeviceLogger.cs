@@ -1,7 +1,7 @@
 namespace DeviceWrappers.Utils.Logging
 {
     /// <summary>
-    /// Интерфейс для логирования событий устройств
+    /// Interface for logging device events
     /// </summary>
     public interface IDeviceLogger
     {
@@ -13,7 +13,7 @@ namespace DeviceWrappers.Utils.Logging
     }
 
     /// <summary>
-    /// Уровень логирования
+    /// Logging level
     /// </summary>
     public enum LogLevel
     {

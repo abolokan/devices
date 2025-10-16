@@ -6,7 +6,7 @@ using Prometheus.Devices.Core.Platform;
 namespace DeviceWrappers.Devices.Scanner
 {
     /// <summary>
-    /// Офисный сканер через платформо-специфичные API
+    /// Office scanner via platform-specific API
     /// </summary>
     public class OfficeScanner : BaseDevice, IScanner
     {

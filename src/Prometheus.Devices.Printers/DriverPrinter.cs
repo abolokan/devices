@@ -7,7 +7,7 @@ using Prometheus.Devices.Core.Profiles;
 namespace DeviceWrappers.Devices.Printer
 {
     /// <summary>
-    /// Принтер, работающий через драйвер команд (ESC/POS, Bixolon и т.п.)
+    /// Printer operating via command driver (ESC/POS, Bixolon, etc.)
     /// </summary>
     public class DriverPrinter : BaseDevice, IPrinter
     {
@@ -42,7 +42,7 @@ namespace DeviceWrappers.Devices.Printer
             if (init?.Length > 0)
                 await Connection.SendAsync(init, cancellationToken);
 
-            var cpId = _profile.EscPosCodepage ?? 0; // если не задано — оставляем по умолчанию
+            var cpId = _profile.EscPosCodepage ?? 0; // if not set - leave default
             var cp = _driver.BuildSetCodepage(cpId);
             if (cp?.Length > 0)
                 await Connection.SendAsync(cp, cancellationToken);
@@ -64,7 +64,7 @@ namespace DeviceWrappers.Devices.Printer
 
         protected override Task OnResetAsync(CancellationToken cancellationToken)
         {
-            // Для большинства ESC/POS достаточно переинициализировать (ESC @)
+            // For most ESC/POS, reinitializing (ESC @) is enough
             return Task.CompletedTask;
         }
 
@@ -131,19 +131,19 @@ namespace DeviceWrappers.Devices.Printer
 
         public Task<bool> CancelPrintJobAsync(string jobId, CancellationToken cancellationToken = default)
         {
-            // Для RAW/ESC-POS отмена часто не поддерживается после отправки
+            // For RAW/ESC-POS, cancellation often not supported after sending
             return Task.FromResult(false);
         }
 
         public Task<PrintJobStatus> GetPrintJobStatusAsync(string jobId, CancellationToken cancellationToken = default)
         {
-            // RAW-режим не даёт статуса — вернём Completed как по факту
+            // RAW mode doesn't provide status - return Completed as fact
             return Task.FromResult(PrintJobStatus.Completed);
         }
 
         public Task<ConsumablesLevel> GetConsumablesLevelAsync(CancellationToken cancellationToken = default)
         {
-            // В RAW-режиме чаще всего недоступно; возвращаем неизвестно
+            // In RAW mode, usually unavailable; return unknown
             return Task.FromResult(new ConsumablesLevel { TonerLevel = -1, PaperLevel = -1, DrumLevel = -1 });
         }
 

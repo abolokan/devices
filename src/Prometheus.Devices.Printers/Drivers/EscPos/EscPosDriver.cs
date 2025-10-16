@@ -4,7 +4,7 @@ using Prometheus.Devices.Core.Drivers;
 namespace Prometheus.Devices.Printers.Drivers.EscPos
 {
     /// <summary>
-    /// Базовый ESC/POS драйвер (совместим с большинством чековых принтеров)
+    /// Basic ESC/POS driver (compatible with most receipt printers)
     /// </summary>
     public class EscPosDriver : IPrinterDriver
     {
@@ -12,7 +12,7 @@ namespace Prometheus.Devices.Printers.Drivers.EscPos
 
         public virtual byte[] BuildSetCodepage(int codepageId)
         {
-            // ESC t n — выбор страницы кода/таблицы символов
+            // ESC t n — select code page/character table
             return new byte[] { 0x1B, 0x74, (byte)codepageId };
         }
 

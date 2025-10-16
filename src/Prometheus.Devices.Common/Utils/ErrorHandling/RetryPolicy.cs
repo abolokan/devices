@@ -1,7 +1,7 @@
 namespace DeviceWrappers.Utils.ErrorHandling
 {
     /// <summary>
-    /// Политика повторных попыток при ошибках
+    /// Retry policy for error handling
     /// </summary>
     public class RetryPolicy
     {
@@ -12,7 +12,7 @@ namespace DeviceWrappers.Utils.ErrorHandling
 
         public RetryPolicy()
         {
-            // По умолчанию повторяем только при определенных типах ошибок
+            // By default, retry only for specific error types
             ShouldRetry = ex => 
                 ex is DeviceTimeoutException || 
                 ex is DeviceBusyException ||
@@ -20,7 +20,7 @@ namespace DeviceWrappers.Utils.ErrorHandling
         }
 
         /// <summary>
-        /// Выполнить операцию с повторными попытками
+        /// Execute operation with retry attempts
         /// </summary>
         public async Task<T> ExecuteAsync<T>(
             Func<Task<T>> operation, 
@@ -54,7 +54,7 @@ namespace DeviceWrappers.Utils.ErrorHandling
         }
 
         /// <summary>
-        /// Выполнить операцию с повторными попытками (без возвращаемого значения)
+        /// Execute operation with retry attempts (no return value)
         /// </summary>
         public async Task ExecuteAsync(
             Func<Task> operation, 

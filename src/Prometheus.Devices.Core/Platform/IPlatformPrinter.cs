@@ -1,29 +1,28 @@
 namespace Prometheus.Devices.Core.Platform
 {
     /// <summary>
-    /// Платформо-специфичный интерфейс для печати
+    /// Platform-specific interface for printing
     /// </summary>
     public interface IPlatformPrinter
     {
         /// <summary>
-        /// Получить список доступных принтеров в системе
+        /// Get list of available printers in the system
         /// </summary>
         Task<string[]> GetAvailablePrintersAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Печать текста
+        /// Print text
         /// </summary>
         Task<string> PrintTextAsync(string printerName, string text, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Печать файла (PDF, TXT, изображение)
+        /// Print file (PDF, TXT, image)
         /// </summary>
         Task<string> PrintFileAsync(string printerName, string filePath, CancellationToken cancellationToken = default);
 
         /// <summary>
-        /// Получить статус принтера
+        /// Get printer status
         /// </summary>
         Task<bool> IsPrinterAvailableAsync(string printerName, CancellationToken cancellationToken = default);
     }
 }
-

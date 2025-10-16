@@ -4,7 +4,7 @@ using Prometheus.Devices.Core.Interfaces;
 namespace Prometheus.Devices.Core.Connections
 {
     /// <summary>
-    /// Реализация TCP подключения
+    /// TCP connection implementation
     /// </summary>
     public class TcpConnection : BaseConnection
     {
@@ -33,18 +33,18 @@ namespace Prometheus.Devices.Core.Connections
 
             try
             {
-                SetStatus(ConnectionStatus.Connecting, "Подключение к устройству...");
+                SetStatus(ConnectionStatus.Connecting, "Connecting to device...");
 
                 _client = new TcpClient();
                 await _client.ConnectAsync(_host, _port, cancellationToken);
                 _stream = _client.GetStream();
 
-                SetStatus(ConnectionStatus.Connected, "Успешно подключено");
+                SetStatus(ConnectionStatus.Connected, "Successfully connected");
             }
             catch (Exception ex)
             {
-                SetStatus(ConnectionStatus.Error, "Ошибка подключения", ex);
-                throw new ConnectionException($"Не удалось подключиться к {_host}:{_port}", ex);
+                SetStatus(ConnectionStatus.Error, "Connection error", ex);
+                throw new ConnectionException($"Failed to connect to {_host}:{_port}", ex);
             }
         }
 
@@ -55,7 +55,7 @@ namespace Prometheus.Devices.Core.Connections
 
             try
             {
-                SetStatus(ConnectionStatus.Disconnecting, "Отключение от устройства...");
+                SetStatus(ConnectionStatus.Disconnecting, "Disconnecting from device...");
 
                 if (_stream != null)
                 {
@@ -70,11 +70,11 @@ namespace Prometheus.Devices.Core.Connections
                     _client = null;
                 }
 
-                SetStatus(ConnectionStatus.Disconnected, "Отключено");
+                SetStatus(ConnectionStatus.Disconnected, "Disconnected");
             }
             catch (Exception ex)
             {
-                SetStatus(ConnectionStatus.Error, "Ошибка при отключении", ex);
+                SetStatus(ConnectionStatus.Error, "Disconnection error", ex);
                 throw;
             }
         }
@@ -84,10 +84,10 @@ namespace Prometheus.Devices.Core.Connections
             ThrowIfDisposed();
 
             if (Status != ConnectionStatus.Connected)
-                throw new InvalidOperationException("Подключение не установлено");
+                throw new InvalidOperationException("Connection not established");
 
             if (data == null || data.Length == 0)
-                throw new ArgumentException("Данные не могут быть пустыми", nameof(data));
+                throw new ArgumentException("Data cannot be empty", nameof(data));
 
             try
             {
@@ -97,8 +97,8 @@ namespace Prometheus.Devices.Core.Connections
             }
             catch (Exception ex)
             {
-                SetStatus(ConnectionStatus.Error, "Ошибка отправки данных", ex);
-                throw new ConnectionException("Ошибка при отправке данных", ex);
+                SetStatus(ConnectionStatus.Error, "Send data error", ex);
+                throw new ConnectionException("Error sending data", ex);
             }
         }
 
@@ -107,7 +107,7 @@ namespace Prometheus.Devices.Core.Connections
             ThrowIfDisposed();
 
             if (Status != ConnectionStatus.Connected)
-                throw new InvalidOperationException("Подключение не установлено");
+                throw new InvalidOperationException("Connection not established");
 
             try
             {
@@ -116,7 +116,7 @@ namespace Prometheus.Devices.Core.Connections
 
                 if (bytesRead == 0)
                 {
-                    SetStatus(ConnectionStatus.Disconnected, "Соединение закрыто удаленным хостом");
+                    SetStatus(ConnectionStatus.Disconnected, "Connection closed by remote host");
                     return Array.Empty<byte>();
                 }
 
@@ -126,8 +126,8 @@ namespace Prometheus.Devices.Core.Connections
             }
             catch (Exception ex)
             {
-                SetStatus(ConnectionStatus.Error, "Ошибка получения данных", ex);
-                throw new ConnectionException("Ошибка при получении данных", ex);
+                SetStatus(ConnectionStatus.Error, "Receive data error", ex);
+                throw new ConnectionException("Error receiving data", ex);
             }
         }
 
@@ -138,7 +138,7 @@ namespace Prometheus.Devices.Core.Connections
 
             try
             {
-                // Проверяем доступность сокета
+                // Check socket availability
                 return !(_client.Client.Poll(1, SelectMode.SelectRead) && _client.Available == 0);
             }
             catch
@@ -160,7 +160,7 @@ namespace Prometheus.Devices.Core.Connections
     }
 
     /// <summary>
-    /// Исключение подключения
+    /// Connection exception
     /// </summary>
     public class ConnectionException : Exception
     {
@@ -168,4 +168,3 @@ namespace Prometheus.Devices.Core.Connections
         public ConnectionException(string message, Exception innerException) : base(message, innerException) { }
     }
 }
-

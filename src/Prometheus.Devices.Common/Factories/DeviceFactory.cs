@@ -16,7 +16,7 @@ using DeviceWrappers.Devices.Scanner;
 namespace Prometheus.Devices.Common.Factories
 {
     /// <summary>
-    /// Централизованная фабрика для создания устройств
+    /// Centralized factory for creating devices
     /// </summary>
     public static class DeviceFactory
     {
