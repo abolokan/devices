@@ -132,10 +132,43 @@ sudo apt-get install cups printer-driver-all
 sudo apt-get install sane sane-utils
 ```
 
+### Dependency Injection (рекомендуется для production)
+
+```csharp
+// Program.cs
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddPrometheusDevicesCore(builder.Configuration);
+builder.Services.AddHealthChecks().AddDeviceHealthCheck();
+
+var app = builder.Build();
+app.MapHealthChecks("/health");
+app.Run();
+```
+
+### Configuration (appsettings.json)
+
+```json
+{
+  "PrometheusDevices": {
+    "Printers": {
+      "BixolonBK331": {
+        "Type": "Driver",
+        "IpAddress": "192.168.1.50",
+        "Port": 9100,
+        "ProfilePath": "printer.profile.json"
+      }
+    }
+  }
+}
+```
+
+Пример см. в `Prometheus.Devices.Core/appsettings.example.json`
+
 ### Замечания
 - **Промышленные принтеры** (ESC/POS): для Bixolon BK3-31 настройте `EscPosCodepage` в профиле (17 = PC866 кириллица).
 - **USB-подключения**: `UsbConnection` — каркас. Для production используйте LibUsbDotNet/WinUSB.
 - **WIA сканирование** (Windows): требует COM reference к `WIA` библиотеке.
-- Код демонстрационный: команды `INIT`, `@PJL` — примеры. Замените на протокол производителя.
+- **Рефакторинг**: DeviceWrappers удалён, весь код в Prometheus.Devices.*
 
 

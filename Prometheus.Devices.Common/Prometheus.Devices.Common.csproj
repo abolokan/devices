@@ -6,4 +6,16 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Prometheus.Devices.Core\Prometheus.Devices.Core.csproj" />
+    <ProjectReference Include="..\Prometheus.Devices.Printers\Prometheus.Devices.Printers.csproj" />
+    <ProjectReference Include="..\Prometheus.Devices.Cameras\Prometheus.Devices.Cameras.csproj" />
+    <ProjectReference Include="..\Prometheus.Devices.Scanners\Prometheus.Devices.Scanners.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="8.*" />
+    <PackageReference Include="OpenCvSharp4" Version="4.*" />
+  </ItemGroup>
+
 </Project>

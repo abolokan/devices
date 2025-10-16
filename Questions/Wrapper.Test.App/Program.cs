@@ -1,7 +1,8 @@
-﻿using DeviceWrappers.Utils;
-using Prometheus.Devices.Core.Interfaces;
+﻿using Prometheus.Devices.Core.Interfaces;
 using Prometheus.Devices.Core.Drivers;
 using Prometheus.Devices.Core.Connections;
+using Prometheus.Devices.Common.Configuration;
+using Prometheus.Devices.Common.Factories;
 
 class Program
 {
