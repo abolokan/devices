@@ -9,7 +9,7 @@ namespace Prometheus.Devices.Core.Configuration
 
     public class CameraOptions
     {
-        public string Type { get; set; } // "Local", "IP", "USB"
+        public string Type { get; set; } 
         public int? Index { get; set; }
         public string IpAddress { get; set; }
         public int? Port { get; set; }
@@ -22,7 +22,7 @@ namespace Prometheus.Devices.Core.Configuration
 
     public class PrinterOptions
     {
-        public string Type { get; set; } // "Driver", "Office", "Network", "Serial", "USB"
+        public string Type { get; set; }
         public string ProfilePath { get; set; }
         public string SystemPrinterName { get; set; }
         public string IpAddress { get; set; }
@@ -36,7 +36,7 @@ namespace Prometheus.Devices.Core.Configuration
 
     public class ScannerOptions
     {
-        public string Type { get; set; } // "Office"
+        public string Type { get; set; }
         public string SystemScannerName { get; set; }
         public int Resolution { get; set; } = 300;
         public string ColorMode { get; set; } = "Color";
