@@ -15,7 +15,8 @@ namespace Prometheus.Devices.Core.Connections
         private readonly string? _serialNumber;
         private readonly byte _readEndpointId;
         private readonly byte _writeEndpointId;
-        
+
+        private UsbContext? _context;
         private IUsbDevice? _usbDevice;
         private UsbEndpointReader? _reader;
         private UsbEndpointWriter? _writer;
@@ -63,8 +64,8 @@ namespace Prometheus.Devices.Core.Connections
                     SetStatus(ConnectionStatus.Connecting, $"Searching for USB device VID={_vendorId:X4}, PID={_productId:X4}...");
 
                     // Find and open USB device using LibUsbDotNet 3.x API
-                    var context = new UsbContext();
-                    var deviceList = context.List();
+                    _context = new UsbContext();
+                    var deviceList = _context.List();
                     
                     var targetDevice = deviceList.FirstOrDefault(d => 
                         d.VendorId == _vendorId && 
@@ -215,6 +216,14 @@ namespace Prometheus.Devices.Core.Connections
                     try { _usbDevice.Close(); } catch { }
                     try { _usbDevice.Dispose(); } catch { }
                     _usbDevice = null;
+                }
+
+                if (_context != null)
+                {
+                    try
+                    { _context.Dispose(); }
+                    catch { }
+                    _context = null;
                 }
             }
             catch
