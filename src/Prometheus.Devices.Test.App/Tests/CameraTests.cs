@@ -86,19 +86,57 @@ namespace Prometheus.Devices.Test.App.Tests
                 Console.Write("Start video stream for 5 seconds? (y/n): ");
                 if (Console.ReadLine()?.ToLower() == "y")
                 {
+                    Console.Write("Save video frames to disk? (y/n): ");
+                    bool saveFrames = Console.ReadLine()?.ToLower() == "y";
+                    
+                    string? videoFolder = null;
+                    if (saveFrames)
+                    {
+                        var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+                        videoFolder = Path.Combine(AppContext.BaseDirectory, $"video_stream_{timestamp}");
+                        Directory.CreateDirectory(videoFolder);
+                        Console.WriteLine($"Frames will be saved to: {videoFolder}");
+                    }
+
                     Console.WriteLine("Starting stream...");
                     int frameCount = 0;
-                    camera.FrameCaptured += (s, e) =>
+                    long totalSize = 0;
+                    
+                    camera.FrameCaptured += async (s, e) =>
                     {
                         frameCount++;
+                        totalSize += e.Frame.Data.Length;
                         Console.WriteLine($"  Received frame #{e.Frame.FrameNumber}, size: {e.Frame.Data.Length / 1024} KB");
+                        
+                        if (saveFrames && videoFolder != null)
+                        {
+                            try
+                            {
+                                var frameFilename = Path.Combine(videoFolder, $"frame_{e.Frame.FrameNumber:D5}.jpg");
+                                await camera.SaveFrameAsync(e.Frame, frameFilename);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"    Error saving frame: {ex.Message}");
+                            }
+                        }
                     };
 
                     await camera.StartStreamingAsync();
                     await Task.Delay(5000);
                     await camera.StopStreamingAsync();
 
-                    Console.WriteLine($"✓ Stream stopped. Captured frames: {frameCount}");
+                    Console.WriteLine($"✓ Stream stopped.");
+                    Console.WriteLine($"  Total frames: {frameCount}");
+                    Console.WriteLine($"  Total size: {totalSize / 1024} KB");
+                    Console.WriteLine($"  Average FPS: {frameCount / 5.0:F1}");
+                    
+                    if (saveFrames && videoFolder != null)
+                    {
+                        Console.WriteLine($"  Frames saved to: {videoFolder}");
+                        Console.WriteLine($"  You can create video using ffmpeg:");
+                        Console.WriteLine($"    ffmpeg -framerate 30 -i \"{videoFolder}\\frame_%05d.jpg\" -c:v libx264 output.mp4");
+                    }
                 }
             }
             catch (Exception ex)

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Logging;
 using Prometheus.Devices.Core.Extensions;
 using Prometheus.Devices.Core.HealthChecks;
 using Prometheus.Devices.Test.App.Tests;
@@ -103,6 +104,13 @@ namespace Prometheus.Devices.Test.App
                 .Build();
 
             services.AddSingleton<IConfiguration>(configuration);
+
+            // Add Logging
+            services.AddLogging(builder =>
+            {
+                builder.AddConsole();
+                builder.SetMinimumLevel(LogLevel.Information);
+            });
 
             // Register Prometheus.Devices via Extension
             services.AddPrometheusDevicesCore(configuration);
