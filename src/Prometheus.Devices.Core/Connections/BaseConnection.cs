@@ -1,4 +1,4 @@
-using Prometheus.Devices.Core.Interfaces;
+using Prometheus.Devices.Abstractions.Interfaces;
 
 namespace Prometheus.Devices.Core.Connections
 {

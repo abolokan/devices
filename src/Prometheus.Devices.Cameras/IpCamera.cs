@@ -1,4 +1,4 @@
-using Prometheus.Devices.Core.Connections;
+using Prometheus.Devices.Connections;
 
 namespace Prometheus.Devices.Cameras
 {

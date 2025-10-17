@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Prometheus.Devices.Abstractions\Prometheus.Devices.Abstractions.csproj" />
     <ProjectReference Include="..\Prometheus.Devices.Core\Prometheus.Devices.Core.csproj" />
+    <ProjectReference Include="..\Prometheus.Devices.Connections\Prometheus.Devices.Connections.csproj" />
   </ItemGroup>
 
 </Project>

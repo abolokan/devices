@@ -1,5 +1,4 @@
-using Prometheus.Devices.Core.Connections;
-using System.IO.Ports;
+using Prometheus.Devices.Connections;
 
 namespace Prometheus.Devices.Printers
 {
@@ -12,7 +11,7 @@ namespace Prometheus.Devices.Printers
         public string PortName { get; }
         public int BaudRate { get; }
 
-        public SerialPrinter(string deviceId, string deviceName, string portName, int baudRate = 9600)
+        private SerialPrinter(string deviceId, string deviceName, string portName, int baudRate = 9600)
             : base(deviceId, deviceName, new SerialConnection(portName, baudRate))
         {
             PortName = portName;
@@ -24,14 +23,6 @@ namespace Prometheus.Devices.Printers
             string deviceId = $"SERIAL_PRINTER_{portName}";
             string deviceName = name ?? $"Serial Printer ({portName})";
             return new SerialPrinter(deviceId, deviceName, portName, baudRate);
-        }
-
-        /// <summary>
-        /// Get list of available COM ports
-        /// </summary>
-        public static string[] GetAvailablePorts()
-        {
-            return SerialPort.GetPortNames();
         }
     }
 }

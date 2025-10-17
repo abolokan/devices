@@ -1,9 +1,9 @@
 using System.Text;
+using Prometheus.Devices.Abstractions.Drivers;
+using Prometheus.Devices.Abstractions.Interfaces;
 using Prometheus.Devices.Core.Devices;
-using Prometheus.Devices.Core.Drivers;
-using Prometheus.Devices.Core.Interfaces;
 using Prometheus.Devices.Core.Profiles;
-using PrinterBarcodeType = Prometheus.Devices.Core.Drivers.BarcodeType;
+using PrinterBarcodeType = Prometheus.Devices.Abstractions.Drivers.BarcodeType;
 
 namespace Prometheus.Devices.Printers
 {   

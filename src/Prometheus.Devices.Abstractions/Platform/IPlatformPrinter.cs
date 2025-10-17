@@ -1,4 +1,4 @@
-namespace Prometheus.Devices.Core.Platform
+namespace Prometheus.Devices.Abstractions.Platform
 {
     /// <summary>
     /// Platform-specific interface for printing
@@ -26,3 +26,4 @@ namespace Prometheus.Devices.Core.Platform
         Task<bool> IsPrinterAvailableAsync(string printerName, CancellationToken cancellationToken = default);
     }
 }
+

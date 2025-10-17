@@ -1,5 +1,5 @@
-using Prometheus.Devices.Core.Interfaces;
-using Prometheus.Devices.Core.Extensions;
+using Prometheus.Devices.Abstractions.Interfaces;
+using Prometheus.Devices.Infrastructure.Extensions;
 using Prometheus.Devices.Common.Factories;
 
 namespace Prometheus.Devices.Test.App.Tests

@@ -1,6 +1,6 @@
-using Prometheus.Devices.Core.Interfaces;
+using Prometheus.Devices.Abstractions.Interfaces;
 
-namespace Prometheus.Devices.Core.Platform
+namespace Prometheus.Devices.Abstractions.Platform
 {
     /// <summary>
     /// Platform-specific interface for scanning
@@ -23,3 +23,4 @@ namespace Prometheus.Devices.Core.Platform
         Task<bool> IsScannerAvailableAsync(string scannerName, CancellationToken cancellationToken = default);
     }
 }
+

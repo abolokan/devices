@@ -1,7 +1,7 @@
-using Prometheus.Devices.Core.Interfaces;
-using Prometheus.Devices.Core.Drivers;
-using Prometheus.Devices.Core.Connections;
-using Prometheus.Devices.Core.Extensions;
+using Prometheus.Devices.Abstractions.Interfaces;
+using Prometheus.Devices.Abstractions.Drivers;
+using Prometheus.Devices.Connections;
+using Prometheus.Devices.Infrastructure.Extensions;
 using Prometheus.Devices.Common.Configuration;
 using Prometheus.Devices.Common.Factories;
 using System.Text;

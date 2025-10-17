@@ -1,9 +1,10 @@
 using LibUsbDotNet;
 using LibUsbDotNet.LibUsb;
 using LibUsbDotNet.Main;
-using Prometheus.Devices.Core.Interfaces;
+using Prometheus.Devices.Abstractions.Interfaces;
+using Prometheus.Devices.Core.Connections;
 
-namespace Prometheus.Devices.Core.Connections
+namespace Prometheus.Devices.Connections
 {
     /// <summary>
     /// USB connection implementation using LibUsbDotNet
@@ -301,3 +302,4 @@ namespace Prometheus.Devices.Core.Connections
             $"VID={VendorId:X4}, PID={ProductId:X4}, {Manufacturer} {Product}";
     }
 }
+

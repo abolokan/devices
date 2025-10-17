@@ -1,5 +1,5 @@
-using Prometheus.Devices.Core.Interfaces;
-using Prometheus.Devices.Core.Platform;
+using Prometheus.Devices.Abstractions.Interfaces;
+using Prometheus.Devices.Abstractions.Platform;
 
 namespace Prometheus.Devices.Common.Platform.Linux
 {

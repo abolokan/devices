@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Prometheus.Devices.Abstractions\Prometheus.Devices.Abstractions.csproj" />
     <ProjectReference Include="..\Prometheus.Devices.Core\Prometheus.Devices.Core.csproj" />
+    <ProjectReference Include="..\Prometheus.Devices.Connections\Prometheus.Devices.Connections.csproj" />
     <ProjectReference Include="..\Prometheus.Devices.Printers\Prometheus.Devices.Printers.csproj" />
     <ProjectReference Include="..\Prometheus.Devices.Cameras\Prometheus.Devices.Cameras.csproj" />
     <ProjectReference Include="..\Prometheus.Devices.Scanners\Prometheus.Devices.Scanners.csproj" />
@@ -15,7 +17,10 @@
 
   <ItemGroup>
     <PackageReference Include="System.Drawing.Common" Version="8.*" />
-    <PackageReference Include="OpenCvSharp4" Version="4.*" />
+    <PackageReference Include="Serilog" Version="4.*" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="8.*" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.*" />
+    <PackageReference Include="Serilog.Sinks.File" Version="6.*" />
   </ItemGroup>
 
 </Project>

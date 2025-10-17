@@ -1,5 +1,5 @@
 using System.Runtime.InteropServices;
-using Prometheus.Devices.Core.Platform;
+using Prometheus.Devices.Abstractions.Platform;
 using Prometheus.Devices.Common.Platform.Windows;
 using Prometheus.Devices.Common.Platform.Linux;
 

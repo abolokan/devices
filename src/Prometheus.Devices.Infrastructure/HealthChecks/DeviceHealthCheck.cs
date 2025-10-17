@@ -1,9 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Prometheus.Devices.Core.Extensions;
-using Prometheus.Devices.Core.Interfaces;
+using Prometheus.Devices.Abstractions.Interfaces;
+using Prometheus.Devices.Infrastructure.Extensions;
 
-namespace Prometheus.Devices.Core.HealthChecks
+namespace Prometheus.Devices.Infrastructure.HealthChecks
 {
     public class DeviceHealthCheck : IHealthCheck
     {
@@ -61,4 +61,5 @@ namespace Prometheus.Devices.Core.HealthChecks
         }
     }
 }
+
 

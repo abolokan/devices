@@ -1,5 +1,5 @@
 using System.Text;
-using Prometheus.Devices.Core.Drivers;
+using Prometheus.Devices.Abstractions.Drivers;
 
 namespace Prometheus.Devices.Printers.Drivers.EscPos
 {

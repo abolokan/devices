@@ -1,3 +1,5 @@
+using Prometheus.Devices.Abstractions.Utils;
+
 namespace Prometheus.Devices.Core.Utils
 {
     public class RetryPolicy

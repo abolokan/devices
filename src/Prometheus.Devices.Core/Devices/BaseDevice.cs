@@ -1,16 +1,19 @@
-using Prometheus.Devices.Core.Interfaces;
+using Prometheus.Devices.Abstractions.Interfaces;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Prometheus.Devices.Core.Utils;
 
 namespace Prometheus.Devices.Core.Devices
 {
     /// <summary>
-    /// Base abstract device implementation with retry support
+    /// Base abstract device implementation with retry support and logging
     /// </summary>
     public abstract class BaseDevice : IDevice
     {
         protected DeviceStatus _status = DeviceStatus.NotInitialized;
         protected readonly object _statusLock = new object();
         protected bool _disposed = false;
+        protected readonly ILogger _logger;
 
         public string DeviceId { get; protected set; }
         public string DeviceName { get; protected set; }
@@ -33,11 +36,12 @@ namespace Prometheus.Devices.Core.Devices
 
         protected virtual RetryPolicy RetryPolicy { get; set; }
 
-        protected BaseDevice(string deviceId, string deviceName, IConnection connection)
+        protected BaseDevice(string deviceId, string deviceName, IConnection connection, ILogger? logger = null)
         {
             DeviceId = deviceId ?? throw new ArgumentNullException(nameof(deviceId));
             DeviceName = deviceName ?? throw new ArgumentNullException(nameof(deviceName));
             Connection = connection ?? throw new ArgumentNullException(nameof(connection));
+            _logger = logger ?? NullLogger.Instance;
             RetryPolicy = CreateDefaultRetryPolicy();
         }
 
@@ -57,15 +61,18 @@ namespace Prometheus.Devices.Core.Devices
 
             try
             {
+                _logger.LogInformation("Initializing device {DeviceId} ({DeviceName})...", DeviceId, DeviceName);
                 SetStatus(DeviceStatus.Initializing, "Initializing device...");
                 
                 await OnInitializeAsync(cancellationToken);
                 
                 SetStatus(DeviceStatus.Ready, "Device ready");
+                _logger.LogInformation("Device {DeviceId} initialized successfully", DeviceId);
                 return true;
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Failed to initialize device {DeviceId}: {Message}", DeviceId, ex.Message);
                 SetStatus(DeviceStatus.Error, $"Initialization error: {ex.Message}");
                 return false;
             }
@@ -80,6 +87,8 @@ namespace Prometheus.Devices.Core.Devices
                 if (Connection.Status == ConnectionStatus.Connected)
                     return true;
 
+                _logger.LogInformation("Connecting to device {DeviceId}...", DeviceId);
+
                 await RetryPolicy.ExecuteAsync(async () =>
                 {
                     await Connection.OpenAsync(cancellationToken);
@@ -89,10 +98,12 @@ namespace Prometheus.Devices.Core.Devices
                     return await InitializeAsync(cancellationToken);
 
                 SetStatus(DeviceStatus.Ready, "Connected to device");
+                _logger.LogInformation("Device {DeviceId} connected successfully", DeviceId);
                 return true;
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Failed to connect to device {DeviceId}: {Message}", DeviceId, ex.Message);
                 SetStatus(DeviceStatus.Error, $"Connection error: {ex.Message}");
                 return false;
             }
@@ -102,12 +113,15 @@ namespace Prometheus.Devices.Core.Devices
         {
             try
             {
+                _logger.LogInformation("Disconnecting device {DeviceId}...", DeviceId);
                 SetStatus(DeviceStatus.Disconnected, "Disconnecting from device...");
                 await Connection.CloseAsync(cancellationToken);
+                _logger.LogInformation("Device {DeviceId} disconnected", DeviceId);
                 return true;
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Failed to disconnect device {DeviceId}: {Message}", DeviceId, ex.Message);
                 SetStatus(DeviceStatus.Error, $"Disconnection error: {ex.Message}");
                 return false;
             }

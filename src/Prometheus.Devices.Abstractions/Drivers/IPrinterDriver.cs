@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace Prometheus.Devices.Core.Drivers
+namespace Prometheus.Devices.Abstractions.Drivers
 {
     /// <summary>
     /// Printer driver that builds byte commands for specific protocol/vendor
@@ -74,3 +74,4 @@ namespace Prometheus.Devices.Core.Drivers
         H = 0x33  // High (30%)
     }
 }
+

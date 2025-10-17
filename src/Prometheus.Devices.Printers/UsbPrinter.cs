@@ -1,4 +1,4 @@
-using Prometheus.Devices.Core.Connections;
+using Prometheus.Devices.Connections;
 
 namespace Prometheus.Devices.Printers
 {
@@ -7,7 +7,7 @@ namespace Prometheus.Devices.Printers
         public int VendorId { get; }
         public int ProductId { get; }
 
-        public UsbPrinter(string deviceId, string deviceName, int vendorId, int productId)
+        private UsbPrinter(string deviceId, string deviceName, int vendorId, int productId)
             : base(deviceId, deviceName, new UsbConnection(vendorId, productId))
         {
             VendorId = vendorId;

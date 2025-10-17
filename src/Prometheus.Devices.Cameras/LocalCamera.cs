@@ -1,7 +1,7 @@
 using OpenCvSharp;
-using Prometheus.Devices.Core.Connections;
+using Prometheus.Devices.Connections;
 using Prometheus.Devices.Core.Devices;
-using Prometheus.Devices.Core.Interfaces;
+using Prometheus.Devices.Abstractions.Interfaces;
 using Prometheus.Devices.Core.Utils;
 
 namespace Prometheus.Devices.Cameras

@@ -1,4 +1,4 @@
-namespace Prometheus.Devices.Core.Interfaces
+namespace Prometheus.Devices.Abstractions.Interfaces
 {
     /// <summary>
     /// Base interface for all devices
@@ -113,3 +113,4 @@ namespace Prometheus.Devices.Core.Interfaces
         public DeviceType DeviceType { get; set; }
     }
 }
+

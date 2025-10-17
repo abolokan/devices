@@ -1,6 +1,6 @@
 using System.Text;
+using Prometheus.Devices.Abstractions.Interfaces;
 using Prometheus.Devices.Core.Devices;
-using Prometheus.Devices.Core.Interfaces;
 
 namespace Prometheus.Devices.Printers
 {

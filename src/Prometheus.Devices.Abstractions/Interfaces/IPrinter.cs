@@ -1,4 +1,4 @@
-namespace Prometheus.Devices.Core.Interfaces
+namespace Prometheus.Devices.Abstractions.Interfaces
 {
     /// <summary>
     /// Interface for working with printers
@@ -156,3 +156,4 @@ namespace Prometheus.Devices.Core.Interfaces
         public int Progress { get; set; }
     }
 }
+

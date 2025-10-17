@@ -1,7 +1,8 @@
 using System.Net.Sockets;
-using Prometheus.Devices.Core.Interfaces;
+using Prometheus.Devices.Abstractions.Interfaces;
+using Prometheus.Devices.Core.Connections;
 
-namespace Prometheus.Devices.Core.Connections
+namespace Prometheus.Devices.Connections
 {
     /// <summary>
     /// Production-ready TCP connection implementation
@@ -296,13 +297,5 @@ namespace Prometheus.Devices.Core.Connections
             base.Dispose();
         }
     }
-
-    /// <summary>
-    /// Connection exception
-    /// </summary>
-    public class ConnectionException : Exception
-    {
-        public ConnectionException(string message) : base(message) { }
-        public ConnectionException(string message, Exception innerException) : base(message, innerException) { }
-    }
 }
+

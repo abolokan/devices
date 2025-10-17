@@ -1,6 +1,7 @@
-using Prometheus.Devices.Core.Interfaces;
+using Prometheus.Devices.Abstractions.Interfaces;
+using Prometheus.Devices.Core.Connections;
 
-namespace Prometheus.Devices.Core.Connections
+namespace Prometheus.Devices.Connections
 {
     /// <summary>
     /// Embedded connection for devices that don't require direct transport layer
@@ -69,3 +70,4 @@ namespace Prometheus.Devices.Core.Connections
         }
     }
 }
+

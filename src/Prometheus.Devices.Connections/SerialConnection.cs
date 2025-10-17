@@ -1,7 +1,8 @@
 using System.IO.Ports;
-using Prometheus.Devices.Core.Interfaces;
+using Prometheus.Devices.Abstractions.Interfaces;
+using Prometheus.Devices.Core.Connections;
 
-namespace Prometheus.Devices.Core.Connections
+namespace Prometheus.Devices.Connections
 {
     /// <summary>
     /// Production-ready Serial (COM port) connection implementation
@@ -315,3 +316,5 @@ namespace Prometheus.Devices.Core.Connections
         }
     }
 }
+
+

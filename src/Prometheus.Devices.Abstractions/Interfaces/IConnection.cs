@@ -1,4 +1,4 @@
-namespace Prometheus.Devices.Core.Interfaces
+namespace Prometheus.Devices.Abstractions.Interfaces
 {
     /// <summary>
     /// Base interface for all types of device connections
@@ -69,3 +69,4 @@ namespace Prometheus.Devices.Core.Interfaces
         public Exception Error { get; set; }
     }
 }
+

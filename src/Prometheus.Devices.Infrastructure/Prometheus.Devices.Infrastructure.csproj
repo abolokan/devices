@@ -8,8 +8,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Prometheus.Devices.Abstractions\Prometheus.Devices.Abstractions.csproj" />
-    <ProjectReference Include="..\Prometheus.Devices.Core\Prometheus.Devices.Core.csproj" />
-    <ProjectReference Include="..\Prometheus.Devices.Connections\Prometheus.Devices.Connections.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.*" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.*" />
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="8.*" />
   </ItemGroup>
 
 </Project>

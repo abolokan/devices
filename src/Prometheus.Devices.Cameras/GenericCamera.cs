@@ -1,5 +1,5 @@
 using Prometheus.Devices.Core.Devices;
-using Prometheus.Devices.Core.Interfaces;
+using Prometheus.Devices.Abstractions.Interfaces;
 
 namespace Prometheus.Devices.Cameras
 {

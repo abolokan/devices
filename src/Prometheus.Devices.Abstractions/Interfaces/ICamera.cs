@@ -1,4 +1,4 @@
-namespace Prometheus.Devices.Core.Interfaces
+namespace Prometheus.Devices.Abstractions.Interfaces
 {
     /// <summary>
     /// Interface for working with cameras
@@ -104,3 +104,4 @@ namespace Prometheus.Devices.Core.Interfaces
         public CameraFrame Frame { get; set; }
     }
 }
+

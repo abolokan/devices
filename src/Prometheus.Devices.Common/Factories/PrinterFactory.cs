@@ -1,5 +1,5 @@
-using Prometheus.Devices.Core.Interfaces;
-using Prometheus.Devices.Core.Drivers;
+using Prometheus.Devices.Abstractions.Interfaces;
+using Prometheus.Devices.Abstractions.Drivers;
 using Prometheus.Devices.Core.Profiles;
 using Prometheus.Devices.Printers.Drivers.EscPos;
 using Prometheus.Devices.Printers;

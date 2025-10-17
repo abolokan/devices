@@ -1,4 +1,4 @@
-using Prometheus.Devices.Core.Connections;
+using Prometheus.Devices.Connections;
 using Prometheus.Devices.Core.Utils;
 
 namespace Prometheus.Devices.Printers

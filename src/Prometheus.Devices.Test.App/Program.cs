@@ -1,10 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
-using Prometheus.Devices.Core.Extensions;
-using Prometheus.Devices.Core.HealthChecks;
+using Prometheus.Devices.Infrastructure.Extensions;
+using Prometheus.Devices.Infrastructure.HealthChecks;
 using Prometheus.Devices.Test.App.Tests;
+using Serilog;
 
 namespace Prometheus.Devices.Test.App
 {
@@ -15,102 +16,117 @@ namespace Prometheus.Devices.Test.App
 
         public static async Task Main(string[] args)
         {
-            // Setup Dependency Injection
-            var services = new ServiceCollection();
-            ConfigureServices(services);
-            _serviceProvider = services.BuildServiceProvider();
-            _deviceManager = _serviceProvider.GetRequiredService<IDeviceManager>();
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false)
+                .Build();
 
-            
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration)
+                .CreateLogger();
 
-            bool isRunning = true;
-            while (isRunning)
+            try
             {
-                // Display menu
-                Console.WriteLine("==============================================");
-                Console.WriteLine("  Prometheus Devices Test Application");
-                Console.WriteLine("==============================================");
+                Log.Information("Starting Prometheus Devices Test Application...");
+                
+                var services = new ServiceCollection();
+                ConfigureServices(services);
+                _serviceProvider = services.BuildServiceProvider();
+                _deviceManager = _serviceProvider.GetRequiredService<IDeviceManager>();
+
+                bool isRunning = true;
+                while (isRunning)
+                {
+                    Console.WriteLine("==============================================");
+                    Console.WriteLine("  Prometheus Devices Test Application");
+                    Console.WriteLine("==============================================");
+                    Console.WriteLine();
+                    Console.WriteLine("Select test:");
+                    Console.WriteLine("  0. Exit");
+                    Console.WriteLine("  1. Printer (ESC/POS - Bixolon BK3-31)");
+                    Console.WriteLine("  2. Camera (Local)");
+                    Console.WriteLine("  3. Printer (Office - Windows/Linux)");
+                    Console.WriteLine("  4. Scanner (Office - Windows/Linux)");
+                    Console.WriteLine("  5. Health Check (All registered devices)");
+                    Console.WriteLine("  6. Load devices from appsettings.json");
+                    Console.WriteLine("  7. Barcode Scanner (Zebra SE4107 - USB)");
+                    Console.WriteLine("  8. Barcode Scanner (Zebra SE4107 - Serial)");
+                    Console.WriteLine("  9. Barcode Scanner (Zebra SE4107 - Auto-detect)");
+                    Console.WriteLine("Your choice: ");
+
+                    var choice = Console.ReadLine();
+
+                    switch (choice)
+                    {
+                        case "0":
+                            Console.WriteLine("Exiting...");
+                            isRunning = false;
+                            break;
+
+                        case "1":
+                            await PrinterTests.TestEscPosPrinterAsync(_deviceManager);
+                            break;
+
+                        case "2":
+                            await CameraTests.TestLocalCameraAsync(_deviceManager);
+                            break;
+
+                        case "3":
+                            await PrinterTests.TestOfficePrinterAsync(_deviceManager);
+                            break;
+
+                        case "4":
+                            await ScannerTests.TestOfficeScannerAsync(_deviceManager);
+                            break;
+
+                        case "5":
+                            await HealthCheckTests.TestHealthCheckAsync(_serviceProvider);
+                            break;
+
+                        case "6":
+                            await LoadDevicesFromConfigAsync();
+                            break;
+
+                        case "7":
+                            await BarcodeScannerTests.TestZebraUsbScannerAsync(_deviceManager);
+                            break;
+
+                        case "8":
+                            await BarcodeScannerTests.TestZebraSerialScannerAsync(_deviceManager);
+                            break;
+
+                        case "9":
+                            await BarcodeScannerTests.TestZebraAutoScannerAsync(_deviceManager);
+                            break;
+
+                        default:
+                            Console.WriteLine("Invalid choice. Try again.");
+                            break;
+                    }
+
+                    if (isRunning)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("---");
+                        Console.WriteLine();
+                    }
+                }
+
                 Console.WriteLine();
-                Console.WriteLine("Select test:");
-                Console.WriteLine("  0. Exit");
-                Console.WriteLine("  1. Printer (ESC/POS - Bixolon BK3-31)");
-                Console.WriteLine("  2. Camera (Local)");
-                Console.WriteLine("  3. Printer (Office - Windows/Linux)");
-                Console.WriteLine("  4. Scanner (Office - Windows/Linux)");
-                Console.WriteLine("  5. Health Check (All registered devices)");
-                Console.WriteLine("  6. Load devices from appsettings.json");
-                Console.WriteLine("  7. Barcode Scanner (Zebra SE4107 - USB)");
-                Console.WriteLine("  8. Barcode Scanner (Zebra SE4107 - Serial)");
-                Console.WriteLine("  9. Barcode Scanner (Zebra SE4107 - Auto-detect)");
-                Console.WriteLine("Your choice: ");
-
-                var choice = Console.ReadLine();
-
-                switch (choice)
-                {
-                    case "0":
-                    Console.WriteLine("Exiting...");
-                    isRunning = false;
-                    break;
-
-                    case "1":
-                    await PrinterTests.TestEscPosPrinterAsync(_deviceManager);
-                    break;
-
-                    case "2":
-                    await CameraTests.TestLocalCameraAsync(_deviceManager);
-                    break;
-
-                    case "3":
-                    await PrinterTests.TestOfficePrinterAsync(_deviceManager);
-                    break;
-
-                    case "4":
-                    await ScannerTests.TestOfficeScannerAsync(_deviceManager);
-                    break;
-
-                    case "5":
-                    await HealthCheckTests.TestHealthCheckAsync(_serviceProvider);
-                    break;
-
-                    case "6":
-                    await LoadDevicesFromConfigAsync();
-                    break;
-
-                    case "7":
-                    await BarcodeScannerTests.TestZebraUsbScannerAsync(_deviceManager);
-                    break;
-
-                    case "8":
-                    await BarcodeScannerTests.TestZebraSerialScannerAsync(_deviceManager);
-                    break;
-
-                    case "9":
-                    await BarcodeScannerTests.TestZebraAutoScannerAsync(_deviceManager);
-                    break;
-
-                    default:
-                    Console.WriteLine("Invalid choice. Try again.");
-                    break;
-                }
-
-                if (isRunning)
-                {
-                    Console.WriteLine();
-                    Console.WriteLine("---");
-                    Console.WriteLine();
-                }
+                Console.WriteLine("Disconnecting all devices...");
+                await _deviceManager.DisconnectAllAsync();
+                Console.WriteLine("✓ Done.");
             }
-
-            Console.WriteLine();
-            Console.WriteLine("Disconnecting all devices...");
-            await _deviceManager.DisconnectAllAsync();
-            Console.WriteLine("✓ Done.");
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Application terminated unexpectedly");
+            }
+            finally
+            {
+                await Log.CloseAndFlushAsync();
+            }
         }
 
-        /// <summary>
-        /// Configure Dependency Injection services
-        /// </summary>
         private static void ConfigureServices(IServiceCollection services)
         {
             // Add configuration
@@ -121,15 +137,13 @@ namespace Prometheus.Devices.Test.App
 
             services.AddSingleton<IConfiguration>(configuration);
 
-            // Add Logging
             services.AddLogging(builder =>
             {
-                builder.AddConsole();
-                builder.SetMinimumLevel(LogLevel.Information);
+                builder.ClearProviders();
+                builder.AddSerilog(dispose: true);
             });
 
-            // Register Prometheus.Devices via Extension
-            services.AddPrometheusDevicesCore(configuration);
+            services.AddPrometheusDevices(configuration);
 
             // Add Health Checks
             services.AddHealthChecks()

@@ -9,7 +9,11 @@
   <ItemGroup>
     <ProjectReference Include="..\Prometheus.Devices.Abstractions\Prometheus.Devices.Abstractions.csproj" />
     <ProjectReference Include="..\Prometheus.Devices.Core\Prometheus.Devices.Core.csproj" />
-    <ProjectReference Include="..\Prometheus.Devices.Connections\Prometheus.Devices.Connections.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.IO.Ports" Version="8.*" />
+    <PackageReference Include="LibUsbDotNet" Version="3.0.167-alpha" />
   </ItemGroup>
 
 </Project>

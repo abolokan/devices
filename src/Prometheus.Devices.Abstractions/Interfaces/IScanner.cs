@@ -1,4 +1,4 @@
-namespace Prometheus.Devices.Core.Interfaces
+namespace Prometheus.Devices.Abstractions.Interfaces
 {
     /// <summary>
     /// Interface for working with scanners
@@ -74,3 +74,4 @@ namespace Prometheus.Devices.Core.Interfaces
         public DateTime Timestamp { get; set; }
     }
 }
+

@@ -13,13 +13,21 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.0" />
+    <PackageReference Include="Serilog" Version="4.*" />
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="8.*" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="8.*" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="8.*" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.*" />
+    <PackageReference Include="Serilog.Sinks.File" Version="6.*" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Prometheus.Devices.Abstractions\Prometheus.Devices.Abstractions.csproj" />
+    <ProjectReference Include="..\Prometheus.Devices.Core\Prometheus.Devices.Core.csproj" />
+    <ProjectReference Include="..\Prometheus.Devices.Connections\Prometheus.Devices.Connections.csproj" />
+    <ProjectReference Include="..\Prometheus.Devices.Infrastructure\Prometheus.Devices.Infrastructure.csproj" />
     <ProjectReference Include="..\Prometheus.Devices.Cameras\Prometheus.Devices.Cameras.csproj" />
     <ProjectReference Include="..\Prometheus.Devices.Common\Prometheus.Devices.Common.csproj" />
-    <ProjectReference Include="..\Prometheus.Devices.Core\Prometheus.Devices.Core.csproj" />
     <ProjectReference Include="..\Prometheus.Devices.Printers\Prometheus.Devices.Printers.csproj" />
     <ProjectReference Include="..\Prometheus.Devices.Scanners\Prometheus.Devices.Scanners.csproj" />
   </ItemGroup>

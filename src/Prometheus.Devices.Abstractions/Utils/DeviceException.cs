@@ -1,4 +1,4 @@
-namespace Prometheus.Devices.Core.Utils
+namespace Prometheus.Devices.Abstractions.Utils
 {
     public class DeviceException : Exception
     {
@@ -81,4 +81,5 @@ namespace Prometheus.Devices.Core.Utils
         FirmwareError = 501
     }
 }
+
 

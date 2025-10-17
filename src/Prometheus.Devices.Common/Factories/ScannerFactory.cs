@@ -1,4 +1,4 @@
-using Prometheus.Devices.Core.Interfaces;
+using Prometheus.Devices.Abstractions.Interfaces;
 using Prometheus.Devices.Scanners;
 using System.IO.Ports;
 using System.Runtime.InteropServices;

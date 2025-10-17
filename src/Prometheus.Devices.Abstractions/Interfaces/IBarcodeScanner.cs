@@ -1,4 +1,4 @@
-namespace Prometheus.Devices.Core.Interfaces
+namespace Prometheus.Devices.Abstractions.Interfaces
 {
     /// <summary>
     /// Interface for working with barcode/QR scanners
@@ -184,4 +184,5 @@ namespace Prometheus.Devices.Core.Interfaces
         public BarcodeData Barcode { get; set; } = new BarcodeData();
     }
 }
+
 
