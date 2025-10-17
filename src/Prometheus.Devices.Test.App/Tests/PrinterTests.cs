@@ -4,6 +4,7 @@ using Prometheus.Devices.Core.Connections;
 using Prometheus.Devices.Core.Extensions;
 using Prometheus.Devices.Common.Configuration;
 using Prometheus.Devices.Common.Factories;
+using System.Text;
 
 namespace Prometheus.Devices.Test.App.Tests
 {
@@ -65,21 +66,25 @@ namespace Prometheus.Devices.Test.App.Tests
                 Console.WriteLine($"✓ Connected to {profile.Manufacturer} {profile.Model}");
                 Console.WriteLine("Sending print job...");
 
-                await printer.PrintTextAsync("========================================");
-                await printer.PrintTextAsync($"  {profile.Manufacturer} {profile.Model}");
-                await printer.PrintTextAsync("  ESC/POS Test Print");
-                await printer.PrintTextAsync("========================================");
-                await printer.PrintTextAsync("");
-                await printer.PrintTextAsync("Cyrillic: Привет, мир!");
-                await printer.PrintTextAsync("Latin: Hello, World!");
-                await printer.PrintTextAsync("Numbers: 1234567890");
-                await printer.PrintTextAsync("");
-                await printer.PrintTextAsync("Date/Time: " + DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss"));
-                await printer.PrintTextAsync("");
-                await printer.PrintTextAsync("----------------------------------------");
-                await printer.PrintTextAsync($"Code page: {profile.DefaultCodepage} (ESC t {profile.EscPosCodepage})");
-                await printer.PrintTextAsync($"Cut: {(profile.SupportsCut ? "Yes" : "No")}");
-                await printer.PrintTextAsync("========================================");
+                var printContent = BuildPrintContent(
+                    "========================================",
+                    $"  {profile.Manufacturer} {profile.Model}",
+                    "  ESC/POS Test Print",
+                    "========================================",
+                    "",
+                    "Cyrillic: Привет, мир!",
+                    "Latin: Hello, World!",
+                    "Numbers: 1234567890",
+                    "",
+                    "Date/Time: " + DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss"),
+                    "",
+                    "----------------------------------------",
+                    $"Code page: {profile.DefaultCodepage} (ESC t {profile.EscPosCodepage})",
+                    $"Cut: {(profile.SupportsCut ? "Yes" : "No")}",
+                    "========================================"
+                );
+
+                await printer.PrintTextAsync(printContent);
 
                 Console.WriteLine("✓ Print job sent. Check the receipt on printer.");
                 Console.WriteLine($"✓ Device registered in DeviceManager with ID: {printer.DeviceId}");
@@ -143,18 +148,22 @@ namespace Prometheus.Devices.Test.App.Tests
                 Console.WriteLine();
                 Console.WriteLine("Sending print job...");
 
-                await printer.PrintTextAsync("========================================");
-                await printer.PrintTextAsync($"  {selectedPrinter}");
-                await printer.PrintTextAsync("  Office Printer Test");
-                await printer.PrintTextAsync("========================================");
-                await printer.PrintTextAsync("");
-                await printer.PrintTextAsync("Cyrillic: Привет, мир!");
-                await printer.PrintTextAsync("Latin: Hello, World!");
-                await printer.PrintTextAsync("Numbers: 1234567890");
-                await printer.PrintTextAsync("");
-                await printer.PrintTextAsync("Date/Time: " + DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss"));
-                await printer.PrintTextAsync("");
-                await printer.PrintTextAsync("========================================");
+                var printContent = BuildPrintContent(
+                    "========================================",
+                    $"  {selectedPrinter}",
+                    "  Office Printer Test",
+                    "========================================",
+                    "",
+                    "Cyrillic: Привет, мир!",
+                    "Latin: Hello, World!",
+                    "Numbers: 1234567890",
+                    "",
+                    "Date/Time: " + DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss"),
+                    "",
+                    "========================================"
+                );
+
+                await printer.PrintTextAsync(printContent);
 
                 Console.WriteLine("✓ Print job sent. Check the printer output.");
                 Console.WriteLine($"✓ Device registered in DeviceManager with ID: {printer.DeviceId}");
@@ -164,6 +173,19 @@ namespace Prometheus.Devices.Test.App.Tests
                 Console.WriteLine($"Print error: {ex.Message}");
                 Console.WriteLine($"StackTrace: {ex.StackTrace}");
             }
+        }
+
+        /// <summary>
+        /// Build print content from multiple lines
+        /// </summary>
+        private static string BuildPrintContent(params string[] lines)
+        {
+            var builder = new StringBuilder();
+            foreach (var line in lines)
+            {
+                builder.AppendLine(line);
+            }
+            return builder.ToString();
         }
     }
 }
