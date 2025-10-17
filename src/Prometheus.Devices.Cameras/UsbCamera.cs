@@ -1,10 +1,7 @@
 using Prometheus.Devices.Core.Connections;
 
-namespace DeviceWrappers.Devices.Camera
+namespace Prometheus.Devices.Cameras
 {
-    /// <summary>
-    /// USB camera
-    /// </summary>
     public class UsbCamera : GenericCamera
     {
         public int VendorId { get; }

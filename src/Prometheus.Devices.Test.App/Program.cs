@@ -21,28 +21,29 @@ namespace Prometheus.Devices.Test.App
             _serviceProvider = services.BuildServiceProvider();
             _deviceManager = _serviceProvider.GetRequiredService<IDeviceManager>();
 
-            // Display menu
-            Console.WriteLine("==============================================");
-            Console.WriteLine("  Prometheus Devices Test Application");
-            Console.WriteLine("==============================================");
-            Console.WriteLine();
-            Console.WriteLine("Select test:");
-            Console.WriteLine("  0. Exit");
-            Console.WriteLine("  1. Printer (ESC/POS - Bixolon BK3-31)");
-            Console.WriteLine("  2. Camera (Local)");
-            Console.WriteLine("  3. Printer (Office - Windows/Linux)");
-            Console.WriteLine("  4. Scanner (Office - Windows/Linux)");
-            Console.WriteLine("  5. Health Check (All registered devices)");
-            Console.WriteLine("  6. Load devices from appsettings.json");
-            Console.WriteLine("  7. Barcode Scanner (Zebra SE4107 - USB)");
-            Console.WriteLine("  8. Barcode Scanner (Zebra SE4107 - Serial)");
-            Console.WriteLine("  9. Barcode Scanner (Zebra SE4107 - Auto-detect)");
-            Console.WriteLine();
+            
 
             bool isRunning = true;
             while (isRunning)
             {
-                Console.Write("Your choice: ");
+                // Display menu
+                Console.WriteLine("==============================================");
+                Console.WriteLine("  Prometheus Devices Test Application");
+                Console.WriteLine("==============================================");
+                Console.WriteLine();
+                Console.WriteLine("Select test:");
+                Console.WriteLine("  0. Exit");
+                Console.WriteLine("  1. Printer (ESC/POS - Bixolon BK3-31)");
+                Console.WriteLine("  2. Camera (Local)");
+                Console.WriteLine("  3. Printer (Office - Windows/Linux)");
+                Console.WriteLine("  4. Scanner (Office - Windows/Linux)");
+                Console.WriteLine("  5. Health Check (All registered devices)");
+                Console.WriteLine("  6. Load devices from appsettings.json");
+                Console.WriteLine("  7. Barcode Scanner (Zebra SE4107 - USB)");
+                Console.WriteLine("  8. Barcode Scanner (Zebra SE4107 - Serial)");
+                Console.WriteLine("  9. Barcode Scanner (Zebra SE4107 - Auto-detect)");
+                Console.WriteLine("Your choice: ");
+
                 var choice = Console.ReadLine();
 
                 switch (choice)

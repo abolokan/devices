@@ -1,4 +1,4 @@
-namespace DeviceWrappers.Utils.ErrorHandling
+namespace Prometheus.Devices.Common.Utils.ErrorHandling
 {
     /// <summary>
     /// Retry policy for error handling

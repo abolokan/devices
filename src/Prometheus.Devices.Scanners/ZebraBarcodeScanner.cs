@@ -3,7 +3,7 @@ using Prometheus.Devices.Core.Devices;
 using Prometheus.Devices.Core.Interfaces;
 using System.Text;
 
-namespace DeviceWrappers.Devices.Scanner
+namespace Prometheus.Devices.Scanners
 {
     /// <summary>
     /// Zebra SE4107 Barcode/QR Scanner

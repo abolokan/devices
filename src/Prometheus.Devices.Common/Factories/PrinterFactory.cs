@@ -2,7 +2,7 @@ using Prometheus.Devices.Core.Interfaces;
 using Prometheus.Devices.Core.Drivers;
 using Prometheus.Devices.Core.Profiles;
 using Prometheus.Devices.Printers.Drivers.EscPos;
-using DeviceWrappers.Devices.Printer;
+using Prometheus.Devices.Printers;
 
 namespace Prometheus.Devices.Common.Factories
 {

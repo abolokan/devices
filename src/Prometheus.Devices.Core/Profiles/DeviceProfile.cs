@@ -5,10 +5,10 @@ namespace Prometheus.Devices.Core.Profiles
     /// </summary>
     public class DeviceProfile
     {
-        public string Manufacturer { get; set; }
-        public string Model { get; set; }
-        public string Version { get; set; }
-        public string Protocol { get; set; } // e.g.: ESC_POS, BIXOLON, ZPL, PJL
+        public string Manufacturer { get; set; } = string.Empty;
+        public string Model { get; set; } = string.Empty;
+        public string Version { get; set; } = "1.0";
+        public string Protocol { get; set; } = "Generic";
         public Dictionary<string, string> Options { get; set; } = new Dictionary<string, string>();
     }
 

@@ -160,7 +160,7 @@ namespace Prometheus.Devices.Core.Devices
         {
             ThrowIfDisposed();
             if (Status != DeviceStatus.Ready && Status != DeviceStatus.Busy)
-                throw new InvalidOperationException("Device not ready");
+                throw new InvalidOperationException($"Device not ready. Current status: {Status}");
         }
 
         public virtual void Dispose()
@@ -169,7 +169,13 @@ namespace Prometheus.Devices.Core.Devices
                 return;
 
             _disposed = true;
-            DisconnectAsync().Wait();
+            try
+            {
+                DisconnectAsync().Wait();
+            }
+            catch
+            {
+            }
             Connection?.Dispose();
         }
     }

@@ -3,7 +3,7 @@ using Prometheus.Devices.Core.Devices;
 using Prometheus.Devices.Core.Interfaces;
 using Prometheus.Devices.Core.Platform;
 
-namespace DeviceWrappers.Devices.Scanner
+namespace Prometheus.Devices.Scanners
 {
     /// <summary>
     /// Office scanner via platform-specific API

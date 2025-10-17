@@ -1,4 +1,4 @@
-namespace DeviceWrappers.Utils.ErrorHandling
+namespace Prometheus.Devices.Common.Utils.ErrorHandling
 {
     /// <summary>
     /// Base exception for devices

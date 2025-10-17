@@ -1,4 +1,4 @@
-namespace DeviceWrappers.Utils.Logging
+namespace Prometheus.Devices.Common.Utils.Logging
 {
     /// <summary>
     /// Simple console logger implementation

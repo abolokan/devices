@@ -1,10 +1,7 @@
 using Prometheus.Devices.Core.Connections;
 
-namespace DeviceWrappers.Devices.Camera
+namespace Prometheus.Devices.Cameras
 {
-    /// <summary>
-    /// IP camera (TCP connection)
-    /// </summary>
     public class IpCamera : GenericCamera
     {
         public string IpAddress { get; }

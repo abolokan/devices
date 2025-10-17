@@ -3,7 +3,7 @@ using Prometheus.Devices.Core.Connections;
 using Prometheus.Devices.Core.Devices;
 using Prometheus.Devices.Core.Interfaces;
 
-namespace DeviceWrappers.Devices.Camera
+namespace Prometheus.Devices.Cameras
 {
     /// <summary>
     /// Local (built-in/USB) camera via OpenCvSharp VideoCapture
@@ -116,7 +116,7 @@ namespace DeviceWrappers.Devices.Camera
                     ok = _capture.Read(mat);
                 }
                 if (!ok || mat.Empty())
-                    throw new InvalidOperationException("Не удалось получить кадр от камеры");
+                    throw new InvalidOperationException("Failed to capture frame from camera");
 
                 var encoded = mat.ImEncode(Settings.Format == ImageFormat.PNG ? ".png" : ".jpg");
                 var data = encoded.ToArray();
@@ -143,14 +143,14 @@ namespace DeviceWrappers.Devices.Camera
             if (frame == null)
                 throw new ArgumentNullException(nameof(frame));
             if (string.IsNullOrWhiteSpace(filePath))
-                throw new ArgumentException("Путь к файлу не может быть пустым", nameof(filePath));
+                throw new ArgumentException("File path cannot be empty", nameof(filePath));
             return File.WriteAllBytesAsync(filePath, frame.Data, cancellationToken)
                 .ContinueWith(_ => true, cancellationToken);
         }
 
         private async Task StreamingLoopAsync(CancellationToken cancellationToken)
         {
-            var delayMs = Math.Max(1, 1000 / Math.Max(1, Settings.FrameRate));
+            var delayMs = Settings.FrameRate > 0 ? Math.Max(1, 1000 / Settings.FrameRate) : 33;
             while (!cancellationToken.IsCancellationRequested && _isStreaming)
             {
                 try
@@ -179,7 +179,7 @@ namespace DeviceWrappers.Devices.Camera
                 {
                     _capture = new VideoCapture(_deviceIndex);
                     if (!_capture.IsOpened())
-                        throw new InvalidOperationException($"Камера с индексом {_deviceIndex} недоступна");
+                        throw new InvalidOperationException($"Camera with index {_deviceIndex} is not available");
                 }
             }
         }

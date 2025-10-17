@@ -1,6 +1,6 @@
 using Prometheus.Devices.Core.Connections;
 
-namespace DeviceWrappers.Devices.Printer
+namespace Prometheus.Devices.Printers
 {
     /// <summary>
     /// Network printer (TCP connection) using PJL protocol

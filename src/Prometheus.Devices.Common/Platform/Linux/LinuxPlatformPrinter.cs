@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Prometheus.Devices.Core.Platform;
 
 namespace Prometheus.Devices.Common.Platform.Linux
@@ -9,7 +8,7 @@ namespace Prometheus.Devices.Common.Platform.Linux
         {
             try
             {
-                var result = await RunCommandAsync("lpstat", "-p", cancellationToken);
+                var result = await LinuxProcessExecutor.RunCommandAsync("lpstat", "-p", cancellationToken);
                 var printers = result
                     .Split('\n', StringSplitOptions.RemoveEmptyEntries)
                     .Where(line => line.StartsWith("printer"))
@@ -30,7 +29,7 @@ namespace Prometheus.Devices.Common.Platform.Linux
             await File.WriteAllTextAsync(tempFile, text, cancellationToken);
             try
             {
-                var jobId = await RunCommandAsync("lp", $"-d {printerName} {tempFile}", cancellationToken);
+                var jobId = await LinuxProcessExecutor.RunCommandAsync("lp", $"-d {printerName} {tempFile}", cancellationToken);
                 return jobId.Trim();
             }
             finally
@@ -43,7 +42,7 @@ namespace Prometheus.Devices.Common.Platform.Linux
         {
             if (!File.Exists(filePath))
                 throw new FileNotFoundException("File not found", filePath);
-            var jobId = await RunCommandAsync("lp", $"-d {printerName} {filePath}", cancellationToken);
+            var jobId = await LinuxProcessExecutor.RunCommandAsync("lp", $"-d {printerName} {filePath}", cancellationToken);
             return jobId.Trim();
         }
 
@@ -51,26 +50,6 @@ namespace Prometheus.Devices.Common.Platform.Linux
         {
             var printers = await GetAvailablePrintersAsync(cancellationToken);
             return printers.Contains(printerName);
-        }
-
-        private async Task<string> RunCommandAsync(string command, string arguments, CancellationToken cancellationToken = default)
-        {
-            var process = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = command,
-                    Arguments = arguments,
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    CreateNoWindow = true
-                }
-            };
-            process.Start();
-            var output = await process.StandardOutput.ReadToEndAsync();
-            await process.WaitForExitAsync(cancellationToken);
-            return output;
         }
     }
 }

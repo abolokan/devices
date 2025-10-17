@@ -1,11 +1,8 @@
 using Prometheus.Devices.Core.Devices;
 using Prometheus.Devices.Core.Interfaces;
 
-namespace DeviceWrappers.Devices.Camera
+namespace Prometheus.Devices.Cameras
 {
-    /// <summary>
-    /// Generic camera implementation
-    /// </summary>
     public class GenericCamera : BaseDevice, ICamera
     {
         private CameraSettings _settings;
@@ -86,7 +83,7 @@ namespace DeviceWrappers.Devices.Camera
 
             try
             {
-                SetStatus(DeviceStatus.Busy, "Захват кадра...");
+                SetStatus(DeviceStatus.Busy, "Capturing frame...");
 
                 // Send frame capture command
                 byte[] captureCommand = System.Text.Encoding.ASCII.GetBytes("CAPTURE\r\n");
@@ -116,12 +113,12 @@ namespace DeviceWrappers.Devices.Camera
                     FrameNumber = Interlocked.Increment(ref _frameCounter)
                 };
 
-                SetStatus(DeviceStatus.Ready, "Кадр захвачен");
+                SetStatus(DeviceStatus.Ready, "Frame captured");
                 return frame;
             }
             catch (Exception ex)
             {
-                SetStatus(DeviceStatus.Error, $"Ошибка захвата кадра: {ex.Message}");
+                SetStatus(DeviceStatus.Error, $"Frame capture error: {ex.Message}");
                 throw;
             }
         }
@@ -150,7 +147,7 @@ namespace DeviceWrappers.Devices.Camera
             catch (Exception ex)
             {
                 _isStreaming = false;
-                SetStatus(DeviceStatus.Error, $"Ошибка запуска потока: {ex.Message}");
+                SetStatus(DeviceStatus.Error, $"Streaming start error: {ex.Message}");
                 return false;
             }
         }
@@ -173,7 +170,7 @@ namespace DeviceWrappers.Devices.Camera
             }
             catch (Exception ex)
             {
-                SetStatus(DeviceStatus.Error, $"Ошибка остановки потока: {ex.Message}");
+                SetStatus(DeviceStatus.Error, $"Streaming stop error: {ex.Message}");
                 return false;
             }
         }
@@ -199,7 +196,7 @@ namespace DeviceWrappers.Devices.Camera
                 throw new ArgumentNullException(nameof(frame));
 
             if (string.IsNullOrEmpty(filePath))
-                throw new ArgumentException("Путь к файлу не может быть пустым", nameof(filePath));
+                throw new ArgumentException("File path cannot be empty", nameof(filePath));
 
             try
             {
@@ -208,7 +205,7 @@ namespace DeviceWrappers.Devices.Camera
             }
             catch (Exception ex)
             {
-                throw new IOException($"Не удалось сохранить кадр: {ex.Message}", ex);
+                throw new IOException($"Failed to save frame: {ex.Message}", ex);
             }
         }
 
@@ -227,12 +224,12 @@ namespace DeviceWrappers.Devices.Camera
                 }
                 catch (Exception ex)
                 {
-                    SetStatus(DeviceStatus.Error, $"Ошибка в потоке видео: {ex.Message}");
+                    SetStatus(DeviceStatus.Error, $"Video stream error: {ex.Message}");
                     break;
                 }
 
                 // Delay to maintain frame rate
-                int delayMs = 1000 / Settings.FrameRate;
+                int delayMs = Settings.FrameRate > 0 ? 1000 / Settings.FrameRate : 33;
                 await Task.Delay(delayMs, cancellationToken);
             }
 

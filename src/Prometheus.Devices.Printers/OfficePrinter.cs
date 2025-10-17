@@ -3,7 +3,7 @@ using Prometheus.Devices.Core.Devices;
 using Prometheus.Devices.Core.Interfaces;
 using Prometheus.Devices.Core.Platform;
 
-namespace DeviceWrappers.Devices.Printer
+namespace Prometheus.Devices.Printers
 {
     /// <summary>
     /// Office printer (laser/inkjet) via platform-specific API

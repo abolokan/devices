@@ -1,5 +1,5 @@
 using Prometheus.Devices.Core.Interfaces;
-using DeviceWrappers.Devices.Scanner;
+using Prometheus.Devices.Scanners;
 using System.IO.Ports;
 using System.Runtime.InteropServices;
 

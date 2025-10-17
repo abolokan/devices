@@ -5,7 +5,7 @@ using Prometheus.Devices.Core.Interfaces;
 using Prometheus.Devices.Core.Profiles;
 using PrinterBarcodeType = Prometheus.Devices.Core.Drivers.BarcodeType;
 
-namespace DeviceWrappers.Devices.Printer
+namespace Prometheus.Devices.Printers
 {   
     public class DriverPrinter : BaseDevice, IPrinter
     {

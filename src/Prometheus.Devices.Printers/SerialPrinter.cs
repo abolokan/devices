@@ -1,7 +1,7 @@
 using Prometheus.Devices.Core.Connections;
 using System.IO.Ports;
 
-namespace DeviceWrappers.Devices.Printer
+namespace Prometheus.Devices.Printers
 {
     /// <summary>
     /// Printer with COM port (Serial) connection

@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Prometheus.Devices.Core.Interfaces;
 using Prometheus.Devices.Core.Platform;
 
@@ -10,7 +9,7 @@ namespace Prometheus.Devices.Common.Platform.Linux
         {
             try
             {
-                var result = await RunCommandAsync("scanimage", "-L", cancellationToken);
+                var result = await LinuxProcessExecutor.RunCommandAsync("scanimage", "-L", cancellationToken);
                 var scanners = result
                     .Split('\n', StringSplitOptions.RemoveEmptyEntries)
                     .Where(line => line.StartsWith("device"))
@@ -45,7 +44,7 @@ namespace Prometheus.Devices.Common.Platform.Linux
                 };
 
                 var arguments = $"-d \"{scannerName}\" --resolution {settings.Resolution} --mode {colorMode} --format jpeg > {tempFile}";
-                await RunCommandAsync("/bin/bash", $"-c \"scanimage {arguments}\"", cancellationToken);
+                await LinuxProcessExecutor.RunCommandAsync("/bin/bash", $"-c \"scanimage {arguments}\"", cancellationToken);
 
                 var data = await File.ReadAllBytesAsync(tempFile, cancellationToken);
                 return new ScannedImage
@@ -69,26 +68,6 @@ namespace Prometheus.Devices.Common.Platform.Linux
         {
             var scanners = await GetAvailableScannersAsync(cancellationToken);
             return scanners.Contains(scannerName);
-        }
-
-        private async Task<string> RunCommandAsync(string command, string arguments, CancellationToken cancellationToken = default)
-        {
-            var process = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = command,
-                    Arguments = arguments,
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    CreateNoWindow = true
-                }
-            };
-            process.Start();
-            var output = await process.StandardOutput.ReadToEndAsync();
-            await process.WaitForExitAsync(cancellationToken);
-            return output;
         }
     }
 }

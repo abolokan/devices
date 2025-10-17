@@ -1,10 +1,7 @@
 using Prometheus.Devices.Core.Connections;
 
-namespace DeviceWrappers.Devices.Printer
+namespace Prometheus.Devices.Printers
 {
-    /// <summary>
-    /// USB printer
-    /// </summary>
     public class UsbPrinter : GenericPrinter
     {
         public int VendorId { get; }

@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace DeviceWrappers.Utils.Logging
+namespace Prometheus.Devices.Common.Utils.Logging
 {
     /// <summary>
     /// File logger implementation

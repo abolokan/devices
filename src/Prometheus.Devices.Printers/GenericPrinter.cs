@@ -2,7 +2,7 @@ using System.Text;
 using Prometheus.Devices.Core.Devices;
 using Prometheus.Devices.Core.Interfaces;
 
-namespace DeviceWrappers.Devices.Printer
+namespace Prometheus.Devices.Printers
 {
     /// <summary>
     /// Generic printer implementation using PJL protocol
@@ -107,13 +107,13 @@ namespace DeviceWrappers.Devices.Printer
             ThrowIfNotReady();
 
             if (data == null || data.Length == 0)
-                throw new ArgumentException("Данные для печати не могут быть пустыми", nameof(data));
+                throw new ArgumentException("Print data cannot be empty", nameof(data));
 
             options ??= new PrintOptions();
 
             try
             {
-                SetStatus(DeviceStatus.Busy, "Подготовка к печати...");
+                SetStatus(DeviceStatus.Busy, "Preparing to print...");
 
                 // Create print job
                 var printJob = new PrintJob
@@ -138,7 +138,7 @@ namespace DeviceWrappers.Devices.Printer
             }
             catch (Exception ex)
             {
-                SetStatus(DeviceStatus.Error, $"Ошибка печати: {ex.Message}");
+                SetStatus(DeviceStatus.Error, $"Print error: {ex.Message}");
                 throw;
             }
         }
@@ -146,7 +146,7 @@ namespace DeviceWrappers.Devices.Printer
         public async Task<PrintJob> PrintTextAsync(string text, PrintOptions options = null, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrEmpty(text))
-                throw new ArgumentException("Текст не может быть пустым", nameof(text));
+                throw new ArgumentException("Text cannot be empty", nameof(text));
 
             byte[] data = Encoding.UTF8.GetBytes(text);
             return await PrintAsync(data, options, cancellationToken);
@@ -155,10 +155,10 @@ namespace DeviceWrappers.Devices.Printer
         public async Task<PrintJob> PrintFileAsync(string filePath, PrintOptions options = null, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrEmpty(filePath))
-                throw new ArgumentException("Путь к файлу не может быть пустым", nameof(filePath));
+                throw new ArgumentException("File path cannot be empty", nameof(filePath));
 
             if (!File.Exists(filePath))
-                throw new FileNotFoundException("Файл не найден", filePath);
+                throw new FileNotFoundException("File not found", filePath);
 
             byte[] data = await File.ReadAllBytesAsync(filePath, cancellationToken);
             return await PrintAsync(data, options, cancellationToken);
@@ -167,7 +167,7 @@ namespace DeviceWrappers.Devices.Printer
         public async Task<bool> CancelPrintJobAsync(string jobId, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrEmpty(jobId))
-                throw new ArgumentException("ID задания не может быть пустым", nameof(jobId));
+                throw new ArgumentException("Job ID cannot be empty", nameof(jobId));
 
             PrintJob job;
             lock (_jobsLock)
@@ -199,7 +199,7 @@ namespace DeviceWrappers.Devices.Printer
         public Task<PrintJobStatus> GetPrintJobStatusAsync(string jobId, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrEmpty(jobId))
-                throw new ArgumentException("ID задания не может быть пустым", nameof(jobId));
+                throw new ArgumentException("Job ID cannot be empty", nameof(jobId));
 
             lock (_jobsLock)
             {
@@ -310,13 +310,13 @@ namespace DeviceWrappers.Devices.Printer
                 }
 
                 PrinterStatus = PrinterStatus.Idle;
-                SetStatus(DeviceStatus.Ready, "Печать завершена");
+                SetStatus(DeviceStatus.Ready, "Print completed");
             }
             catch (Exception ex)
             {
                 job.Status = PrintJobStatus.Error;
                 PrinterStatus = PrinterStatus.Error;
-                SetStatus(DeviceStatus.Error, $"Ошибка печати: {ex.Message}");
+                SetStatus(DeviceStatus.Error, $"Print error: {ex.Message}");
 
                 OnPrintJobStatusChanged(new PrintJobStatusChangedEventArgs
                 {
@@ -350,7 +350,6 @@ namespace DeviceWrappers.Devices.Printer
 
         private void OnSettingsChanged()
         {
-            // Apply settings
         }
 
         protected virtual void OnPrintJobStatusChanged(PrintJobStatusChangedEventArgs e)
