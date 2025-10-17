@@ -111,36 +111,37 @@ namespace Prometheus.Devices.Printers
 
             options ??= new PrintOptions();
 
-            try
+            return await RetryPolicy.ExecuteAsync(async () =>
             {
-                SetStatus(DeviceStatus.Busy, "Preparing to print...");
-
-                // Create print job
-                var printJob = new PrintJob
+                try
                 {
-                    JobId = Guid.NewGuid().ToString(),
-                    DocumentName = $"Document_{DateTime.Now:yyyyMMdd_HHmmss}",
-                    TotalPages = EstimatePages(data, options),
-                    PrintedPages = 0,
-                    Status = PrintJobStatus.Queued,
-                    SubmittedAt = DateTime.Now
-                };
+                    SetStatus(DeviceStatus.Busy, "Preparing to print...");
 
-                lock (_jobsLock)
-                {
-                    _printJobs[printJob.JobId] = printJob;
+                    var printJob = new PrintJob
+                    {
+                        JobId = Guid.NewGuid().ToString(),
+                        DocumentName = $"Document_{DateTime.Now:yyyyMMdd_HHmmss}",
+                        TotalPages = EstimatePages(data, options),
+                        PrintedPages = 0,
+                        Status = PrintJobStatus.Queued,
+                        SubmittedAt = DateTime.Now
+                    };
+
+                    lock (_jobsLock)
+                    {
+                        _printJobs[printJob.JobId] = printJob;
+                    }
+
+                    _ = Task.Run(async () => await ExecutePrintJobAsync(printJob, data, options, cancellationToken), cancellationToken);
+
+                    return printJob;
                 }
-
-                // Start printing in background
-                _ = Task.Run(async () => await ExecutePrintJobAsync(printJob, data, options, cancellationToken), cancellationToken);
-
-                return printJob;
-            }
-            catch (Exception ex)
-            {
-                SetStatus(DeviceStatus.Error, $"Print error: {ex.Message}");
-                throw;
-            }
+                catch (Exception ex)
+                {
+                    SetStatus(DeviceStatus.Error, $"Print error: {ex.Message}");
+                    throw;
+                }
+            }, cancellationToken);
         }
 
         public async Task<PrintJob> PrintTextAsync(string text, PrintOptions options = null, CancellationToken cancellationToken = default)
@@ -216,20 +217,21 @@ namespace Prometheus.Devices.Printers
         {
             ThrowIfNotReady();
 
-            // Request consumables level
-            byte[] command = Encoding.ASCII.GetBytes("@PJL INFO SUPPLIES\r\n");
-            await Connection.SendAsync(command, cancellationToken);
-
-            byte[] response = await Connection.ReceiveAsync(1024, cancellationToken);
-            string responseStr = Encoding.ASCII.GetString(response);
-
-            // Parse response (simplified)
-            return new ConsumablesLevel
+            return await RetryPolicy.ExecuteAsync(async () =>
             {
-                TonerLevel = 85,
-                PaperLevel = 70,
-                DrumLevel = 90
-            };
+                byte[] command = Encoding.ASCII.GetBytes("@PJL INFO SUPPLIES\r\n");
+                await Connection.SendAsync(command, cancellationToken);
+
+                byte[] response = await Connection.ReceiveAsync(1024, cancellationToken);
+                string responseStr = Encoding.ASCII.GetString(response);
+
+                return new ConsumablesLevel
+                {
+                    TonerLevel = 85,
+                    PaperLevel = 70,
+                    DrumLevel = 90
+                };
+            }, cancellationToken);
         }
 
         private async Task ExecutePrintJobAsync(PrintJob job, byte[] data, PrintOptions options, CancellationToken cancellationToken)

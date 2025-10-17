@@ -81,46 +81,46 @@ namespace Prometheus.Devices.Cameras
         {
             ThrowIfNotReady();
 
-            try
+            return await RetryPolicy.ExecuteAsync(async () =>
             {
-                SetStatus(DeviceStatus.Busy, "Capturing frame...");
-
-                // Send frame capture command
-                byte[] captureCommand = System.Text.Encoding.ASCII.GetBytes("CAPTURE\r\n");
-                await Connection.SendAsync(captureCommand, cancellationToken);
-
-                // Get image size
-                byte[] sizeData = await Connection.ReceiveAsync(4, cancellationToken);
-                int imageSize = BitConverter.ToInt32(sizeData, 0);
-
-                // Get image data
-                byte[] imageData = new byte[imageSize];
-                int totalReceived = 0;
-
-                while (totalReceived < imageSize)
+                try
                 {
-                    byte[] chunk = await Connection.ReceiveAsync(Math.Min(8192, imageSize - totalReceived), cancellationToken);
-                    Array.Copy(chunk, 0, imageData, totalReceived, chunk.Length);
-                    totalReceived += chunk.Length;
+                    SetStatus(DeviceStatus.Busy, "Capturing frame...");
+
+                    byte[] captureCommand = System.Text.Encoding.ASCII.GetBytes("CAPTURE\r\n");
+                    await Connection.SendAsync(captureCommand, cancellationToken);
+
+                    byte[] sizeData = await Connection.ReceiveAsync(4, cancellationToken);
+                    int imageSize = BitConverter.ToInt32(sizeData, 0);
+
+                    byte[] imageData = new byte[imageSize];
+                    int totalReceived = 0;
+
+                    while (totalReceived < imageSize)
+                    {
+                        byte[] chunk = await Connection.ReceiveAsync(Math.Min(8192, imageSize - totalReceived), cancellationToken);
+                        Array.Copy(chunk, 0, imageData, totalReceived, chunk.Length);
+                        totalReceived += chunk.Length;
+                    }
+
+                    var frame = new CameraFrame
+                    {
+                        Data = imageData,
+                        Resolution = Settings.Resolution,
+                        Format = Settings.Format,
+                        Timestamp = DateTime.Now,
+                        FrameNumber = Interlocked.Increment(ref _frameCounter)
+                    };
+
+                    SetStatus(DeviceStatus.Ready, "Frame captured");
+                    return frame;
                 }
-
-                var frame = new CameraFrame
+                catch (Exception ex)
                 {
-                    Data = imageData,
-                    Resolution = Settings.Resolution,
-                    Format = Settings.Format,
-                    Timestamp = DateTime.Now,
-                    FrameNumber = Interlocked.Increment(ref _frameCounter)
-                };
-
-                SetStatus(DeviceStatus.Ready, "Frame captured");
-                return frame;
-            }
-            catch (Exception ex)
-            {
-                SetStatus(DeviceStatus.Error, $"Frame capture error: {ex.Message}");
-                throw;
-            }
+                    SetStatus(DeviceStatus.Error, $"Frame capture error: {ex.Message}");
+                    throw;
+                }
+            }, cancellationToken);
         }
 
         public async Task<bool> StartStreamingAsync(CancellationToken cancellationToken = default)

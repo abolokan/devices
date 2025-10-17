@@ -1,8 +1,5 @@
-namespace Prometheus.Devices.Common.Utils.ErrorHandling
+namespace Prometheus.Devices.Core.Utils
 {
-    /// <summary>
-    /// Retry policy for error handling
-    /// </summary>
     public class RetryPolicy
     {
         public int MaxRetries { get; set; } = 3;
@@ -12,22 +9,18 @@ namespace Prometheus.Devices.Common.Utils.ErrorHandling
 
         public RetryPolicy()
         {
-            // By default, retry only for specific error types
             ShouldRetry = ex => 
                 ex is DeviceTimeoutException || 
                 ex is DeviceBusyException ||
                 (ex is DeviceException deviceEx && deviceEx.ErrorCode == ErrorCode.ConnectionFailed);
         }
 
-        /// <summary>
-        /// Execute operation with retry attempts
-        /// </summary>
         public async Task<T> ExecuteAsync<T>(
             Func<Task<T>> operation, 
             CancellationToken cancellationToken = default)
         {
             int attempt = 0;
-            Exception lastException = null;
+            Exception? lastException = null;
 
             while (attempt < MaxRetries)
             {
@@ -53,9 +46,6 @@ namespace Prometheus.Devices.Common.Utils.ErrorHandling
                 lastException);
         }
 
-        /// <summary>
-        /// Execute operation with retry attempts (no return value)
-        /// </summary>
         public async Task ExecuteAsync(
             Func<Task> operation, 
             CancellationToken cancellationToken = default)

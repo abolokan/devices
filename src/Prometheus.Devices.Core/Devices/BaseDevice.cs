@@ -1,9 +1,10 @@
 using Prometheus.Devices.Core.Interfaces;
+using Prometheus.Devices.Core.Utils;
 
 namespace Prometheus.Devices.Core.Devices
 {
     /// <summary>
-    /// Base abstract device implementation
+    /// Base abstract device implementation with retry support
     /// </summary>
     public abstract class BaseDevice : IDevice
     {
@@ -30,11 +31,24 @@ namespace Prometheus.Devices.Core.Devices
 
         public event EventHandler<DeviceStatusChangedEventArgs> StatusChanged;
 
+        protected virtual RetryPolicy RetryPolicy { get; set; }
+
         protected BaseDevice(string deviceId, string deviceName, IConnection connection)
         {
             DeviceId = deviceId ?? throw new ArgumentNullException(nameof(deviceId));
             DeviceName = deviceName ?? throw new ArgumentNullException(nameof(deviceName));
             Connection = connection ?? throw new ArgumentNullException(nameof(connection));
+            RetryPolicy = CreateDefaultRetryPolicy();
+        }
+
+        protected virtual RetryPolicy CreateDefaultRetryPolicy()
+        {
+            return new RetryPolicy
+            {
+                MaxRetries = 3,
+                DelayMs = 1000,
+                ExponentialBackoff = true
+            };
         }
 
         public virtual async Task<bool> InitializeAsync(CancellationToken cancellationToken = default)
@@ -66,7 +80,10 @@ namespace Prometheus.Devices.Core.Devices
                 if (Connection.Status == ConnectionStatus.Connected)
                     return true;
 
-                await Connection.OpenAsync(cancellationToken);
+                await RetryPolicy.ExecuteAsync(async () =>
+                {
+                    await Connection.OpenAsync(cancellationToken);
+                }, cancellationToken);
                 
                 if (Status == DeviceStatus.NotInitialized)
                     return await InitializeAsync(cancellationToken);
@@ -103,7 +120,9 @@ namespace Prometheus.Devices.Core.Devices
             if (Status != DeviceStatus.Ready && Status != DeviceStatus.Busy)
                 throw new InvalidOperationException("Device not ready");
 
-            return await OnGetDeviceInfoAsync(cancellationToken);
+            return await RetryPolicy.ExecuteAsync(
+                async () => await OnGetDeviceInfoAsync(cancellationToken),
+                cancellationToken);
         }
 
         public virtual async Task<bool> ResetAsync(CancellationToken cancellationToken = default)

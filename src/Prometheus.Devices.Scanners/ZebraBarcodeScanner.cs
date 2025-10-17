@@ -1,6 +1,7 @@
 using Prometheus.Devices.Core.Connections;
 using Prometheus.Devices.Core.Devices;
 using Prometheus.Devices.Core.Interfaces;
+using Prometheus.Devices.Core.Utils;
 using System.Text;
 
 namespace Prometheus.Devices.Scanners
@@ -55,6 +56,17 @@ namespace Prometheus.Devices.Scanners
             : base(deviceId, deviceName, connection)
         {
             _settings = new BarcodeScannerSettings();
+        }
+
+        protected override RetryPolicy CreateDefaultRetryPolicy()
+        {
+            return new RetryPolicy
+            {
+                MaxRetries = 5,
+                DelayMs = 500,
+                ExponentialBackoff = false,
+                ShouldRetry = ex => ex is TimeoutException || ex is InvalidOperationException
+            };
         }
 
         protected override async Task OnInitializeAsync(CancellationToken cancellationToken)
@@ -121,37 +133,38 @@ namespace Prometheus.Devices.Scanners
             ThrowIfNotReady();
             SetStatus(DeviceStatus.Busy, "Waiting for barcode...");
 
-            try
+            return await RetryPolicy.ExecuteAsync(async () =>
             {
-                // Send trigger command
-                await SendTriggerCommandAsync(cancellationToken);
-
-                // Wait for barcode data with timeout
-                var timeout = Settings.ScanTimeout > 0 ? Settings.ScanTimeout : 5000;
-                using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-                cts.CancelAfter(timeout);
-
-                var barcode = await ReadBarcodeAsync(cts.Token);
-                
-                SetStatus(DeviceStatus.Ready, "Barcode scanned");
-                
-                if (Settings.BeepOnScan)
+                try
                 {
-                    await BeepAsync(100, cancellationToken);
-                }
+                    await SendTriggerCommandAsync(cancellationToken);
 
-                return barcode;
-            }
-            catch (OperationCanceledException)
-            {
-                SetStatus(DeviceStatus.Ready, "Scan timeout");
-                throw new TimeoutException("Barcode scan timeout");
-            }
-            catch (Exception ex)
-            {
-                SetStatus(DeviceStatus.Error, $"Scan error: {ex.Message}");
-                throw;
-            }
+                    var timeout = Settings.ScanTimeout > 0 ? Settings.ScanTimeout : 5000;
+                    using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+                    cts.CancelAfter(timeout);
+
+                    var barcode = await ReadBarcodeAsync(cts.Token);
+                    
+                    SetStatus(DeviceStatus.Ready, "Barcode scanned");
+                    
+                    if (Settings.BeepOnScan)
+                    {
+                        await BeepAsync(100, cancellationToken);
+                    }
+
+                    return barcode;
+                }
+                catch (OperationCanceledException)
+                {
+                    SetStatus(DeviceStatus.Ready, "Scan timeout");
+                    throw new TimeoutException("Barcode scan timeout");
+                }
+                catch (Exception ex)
+                {
+                    SetStatus(DeviceStatus.Error, $"Scan error: {ex.Message}");
+                    throw;
+                }
+            }, cancellationToken);
         }
 
         public Task<BarcodeType[]> GetSupportedBarcodesAsync(CancellationToken cancellationToken = default)

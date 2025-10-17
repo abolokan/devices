@@ -2,6 +2,7 @@ using OpenCvSharp;
 using Prometheus.Devices.Core.Connections;
 using Prometheus.Devices.Core.Devices;
 using Prometheus.Devices.Core.Interfaces;
+using Prometheus.Devices.Core.Utils;
 
 namespace Prometheus.Devices.Cameras
 {
@@ -29,6 +30,16 @@ namespace Prometheus.Devices.Cameras
             : base(deviceId ?? $"LOCAL_CAM_{deviceIndex}", deviceName ?? $"Local Camera #{deviceIndex}", new EmbeddedConnection())
         {
             _deviceIndex = deviceIndex;
+        }
+
+        protected override RetryPolicy CreateDefaultRetryPolicy()
+        {
+            return new RetryPolicy
+            {
+                MaxRetries = 2,
+                DelayMs = 100,
+                ExponentialBackoff = false
+            };
         }
 
         protected override Task OnInitializeAsync(CancellationToken cancellationToken)
@@ -106,36 +117,39 @@ namespace Prometheus.Devices.Cameras
             ThrowIfNotReady();
             EnsureCaptureCreated();
 
-            Mat mat = null;
-            try
+            return await RetryPolicy.ExecuteAsync(async () =>
             {
-                mat = new Mat();
-                bool ok;
-                lock (_captureLock)
+                Mat? mat = null;
+                try
                 {
-                    ok = _capture.Read(mat);
+                    mat = new Mat();
+                    bool ok;
+                    lock (_captureLock)
+                    {
+                        ok = _capture.Read(mat);
+                    }
+                    if (!ok || mat.Empty())
+                        throw new InvalidOperationException("Failed to capture frame from camera");
+
+                    var encoded = mat.ImEncode(Settings.Format == ImageFormat.PNG ? ".png" : ".jpg");
+                    var data = encoded.ToArray();
+
+                    var frame = new CameraFrame
+                    {
+                        Data = data,
+                        Resolution = new Resolution(mat.Width, mat.Height),
+                        Format = Settings.Format == ImageFormat.PNG ? ImageFormat.PNG : ImageFormat.JPEG,
+                        Timestamp = DateTime.Now,
+                        FrameNumber = Interlocked.Increment(ref _frameCounter)
+                    };
+
+                    return frame;
                 }
-                if (!ok || mat.Empty())
-                    throw new InvalidOperationException("Failed to capture frame from camera");
-
-                var encoded = mat.ImEncode(Settings.Format == ImageFormat.PNG ? ".png" : ".jpg");
-                var data = encoded.ToArray();
-
-                var frame = new CameraFrame
+                finally
                 {
-                    Data = data,
-                    Resolution = new Resolution(mat.Width, mat.Height),
-                    Format = Settings.Format == ImageFormat.PNG ? ImageFormat.PNG : ImageFormat.JPEG,
-                    Timestamp = DateTime.Now,
-                    FrameNumber = Interlocked.Increment(ref _frameCounter)
-                };
-
-                return frame;
-            }
-            finally
-            {
-                mat?.Dispose();
-            }
+                    mat?.Dispose();
+                }
+            }, cancellationToken);
         }
 
         public Task<bool> SaveFrameAsync(CameraFrame frame, string filePath, CancellationToken cancellationToken = default)

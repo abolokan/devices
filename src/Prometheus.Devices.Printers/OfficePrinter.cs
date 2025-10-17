@@ -66,20 +66,53 @@ namespace Prometheus.Devices.Printers
         public async Task<PrintJob> PrintAsync(byte[] data, PrintOptions options = null, CancellationToken cancellationToken = default)
         {
             ThrowIfNotReady();
-            
-            // Create temp file
-            var tempFile = Path.GetTempFileName();
-            await File.WriteAllBytesAsync(tempFile, data, cancellationToken);
 
-            try
+            return await RetryPolicy.ExecuteAsync(async () =>
+            {
+                var tempFile = Path.GetTempFileName();
+                await File.WriteAllBytesAsync(tempFile, data, cancellationToken);
+
+                try
+                {
+                    _printerStatus = PrinterStatus.Printing;
+                    var jobId = await _platformPrinter.PrintFileAsync(_systemPrinterName, tempFile, cancellationToken);
+
+                    var printJob = new PrintJob
+                    {
+                        JobId = jobId,
+                        DocumentName = "OfficePrint",
+                        TotalPages = 1,
+                        PrintedPages = 1,
+                        Status = PrintJobStatus.Completed,
+                        SubmittedAt = DateTime.Now
+                    };
+
+                    _printerStatus = PrinterStatus.Idle;
+                    OnPrintJobStatusChanged(jobId, PrintJobStatus.Queued, PrintJobStatus.Completed, 100);
+
+                    return printJob;
+                }
+                finally
+                {
+                    if (System.IO.File.Exists(tempFile))
+                        System.IO.File.Delete(tempFile);
+                }
+            }, cancellationToken);
+        }
+
+        public async Task<PrintJob> PrintTextAsync(string text, PrintOptions options = null, CancellationToken cancellationToken = default)
+        {
+            ThrowIfNotReady();
+
+            return await RetryPolicy.ExecuteAsync(async () =>
             {
                 _printerStatus = PrinterStatus.Printing;
-                var jobId = await _platformPrinter.PrintFileAsync(_systemPrinterName, tempFile, cancellationToken);
+                var jobId = await _platformPrinter.PrintTextAsync(_systemPrinterName, text, cancellationToken);
 
                 var printJob = new PrintJob
                 {
                     JobId = jobId,
-                    DocumentName = "OfficePrint",
+                    DocumentName = "TextPrint",
                     TotalPages = 1,
                     PrintedPages = 1,
                     Status = PrintJobStatus.Completed,
@@ -90,58 +123,33 @@ namespace Prometheus.Devices.Printers
                 OnPrintJobStatusChanged(jobId, PrintJobStatus.Queued, PrintJobStatus.Completed, 100);
 
                 return printJob;
-            }
-            finally
-            {
-                if (System.IO.File.Exists(tempFile))
-                    System.IO.File.Delete(tempFile);
-            }
-        }
-
-        public async Task<PrintJob> PrintTextAsync(string text, PrintOptions options = null, CancellationToken cancellationToken = default)
-        {
-            ThrowIfNotReady();
-            
-            _printerStatus = PrinterStatus.Printing;
-            var jobId = await _platformPrinter.PrintTextAsync(_systemPrinterName, text, cancellationToken);
-
-            var printJob = new PrintJob
-            {
-                JobId = jobId,
-                DocumentName = "TextPrint",
-                TotalPages = 1,
-                PrintedPages = 1,
-                Status = PrintJobStatus.Completed,
-                SubmittedAt = DateTime.Now
-            };
-
-            _printerStatus = PrinterStatus.Idle;
-            OnPrintJobStatusChanged(jobId, PrintJobStatus.Queued, PrintJobStatus.Completed, 100);
-
-            return printJob;
+            }, cancellationToken);
         }
 
         public async Task<PrintJob> PrintFileAsync(string filePath, PrintOptions options = null, CancellationToken cancellationToken = default)
         {
             ThrowIfNotReady();
-            
-            _printerStatus = PrinterStatus.Printing;
-            var jobId = await _platformPrinter.PrintFileAsync(_systemPrinterName, filePath, cancellationToken);
 
-            var printJob = new PrintJob
+            return await RetryPolicy.ExecuteAsync(async () =>
             {
-                JobId = jobId,
-                DocumentName = System.IO.Path.GetFileName(filePath),
-                TotalPages = 1,
-                PrintedPages = 1,
-                Status = PrintJobStatus.Completed,
-                SubmittedAt = DateTime.Now
-            };
+                _printerStatus = PrinterStatus.Printing;
+                var jobId = await _platformPrinter.PrintFileAsync(_systemPrinterName, filePath, cancellationToken);
 
-            _printerStatus = PrinterStatus.Idle;
-            OnPrintJobStatusChanged(jobId, PrintJobStatus.Queued, PrintJobStatus.Completed, 100);
+                var printJob = new PrintJob
+                {
+                    JobId = jobId,
+                    DocumentName = System.IO.Path.GetFileName(filePath),
+                    TotalPages = 1,
+                    PrintedPages = 1,
+                    Status = PrintJobStatus.Completed,
+                    SubmittedAt = DateTime.Now
+                };
 
-            return printJob;
+                _printerStatus = PrinterStatus.Idle;
+                OnPrintJobStatusChanged(jobId, PrintJobStatus.Queued, PrintJobStatus.Completed, 100);
+
+                return printJob;
+            }, cancellationToken);
         }
 
         public Task<bool> CancelPrintJobAsync(string jobId, CancellationToken cancellationToken = default)

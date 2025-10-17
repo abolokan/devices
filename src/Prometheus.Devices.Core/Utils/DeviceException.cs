@@ -1,12 +1,9 @@
-namespace Prometheus.Devices.Common.Utils.ErrorHandling
+namespace Prometheus.Devices.Core.Utils
 {
-    /// <summary>
-    /// Base exception for devices
-    /// </summary>
     public class DeviceException : Exception
     {
-        public string DeviceId { get; }
-        public string DeviceName { get; }
+        public string? DeviceId { get; }
+        public string? DeviceName { get; }
         public ErrorCode ErrorCode { get; }
 
         public DeviceException(string message) : base(message)
@@ -14,7 +11,7 @@ namespace Prometheus.Devices.Common.Utils.ErrorHandling
             ErrorCode = ErrorCode.Unknown;
         }
 
-        public DeviceException(string message, Exception innerException) 
+        public DeviceException(string message, Exception? innerException) 
             : base(message, innerException)
         {
             ErrorCode = ErrorCode.Unknown;
@@ -37,9 +34,6 @@ namespace Prometheus.Devices.Common.Utils.ErrorHandling
         }
     }
 
-    /// <summary>
-    /// Device initialization exception
-    /// </summary>
     public class DeviceInitializationException : DeviceException
     {
         public DeviceInitializationException(string deviceId, string deviceName, string message)
@@ -53,9 +47,6 @@ namespace Prometheus.Devices.Common.Utils.ErrorHandling
         }
     }
 
-    /// <summary>
-    /// Device timeout exception
-    /// </summary>
     public class DeviceTimeoutException : DeviceException
     {
         public int TimeoutMs { get; }
@@ -67,9 +58,6 @@ namespace Prometheus.Devices.Common.Utils.ErrorHandling
         }
     }
 
-    /// <summary>
-    /// Device busy exception
-    /// </summary>
     public class DeviceBusyException : DeviceException
     {
         public DeviceBusyException(string deviceId, string deviceName, string operation)
@@ -78,9 +66,6 @@ namespace Prometheus.Devices.Common.Utils.ErrorHandling
         }
     }
 
-    /// <summary>
-    /// Error codes
-    /// </summary>
     public enum ErrorCode
     {
         Unknown = 0,

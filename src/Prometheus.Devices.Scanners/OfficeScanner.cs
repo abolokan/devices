@@ -61,17 +61,20 @@ namespace Prometheus.Devices.Scanners
             ThrowIfNotReady();
             SetStatus(DeviceStatus.Busy, "Scanning...");
 
-            try
+            return await RetryPolicy.ExecuteAsync(async () =>
             {
-                var image = await _platformScanner.ScanAsync(_systemScannerName, Settings, cancellationToken);
-                SetStatus(DeviceStatus.Ready, "Scan completed");
-                return image;
-            }
-            catch (Exception ex)
-            {
-                SetStatus(DeviceStatus.Error, $"Scan error: {ex.Message}");
-                throw;
-            }
+                try
+                {
+                    var image = await _platformScanner.ScanAsync(_systemScannerName, Settings, cancellationToken);
+                    SetStatus(DeviceStatus.Ready, "Scan completed");
+                    return image;
+                }
+                catch (Exception ex)
+                {
+                    SetStatus(DeviceStatus.Error, $"Scan error: {ex.Message}");
+                    throw;
+                }
+            }, cancellationToken);
         }
 
         public Task<int[]> GetSupportedResolutionsAsync(CancellationToken cancellationToken = default)

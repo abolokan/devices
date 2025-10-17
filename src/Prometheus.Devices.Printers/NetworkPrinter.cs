@@ -1,4 +1,5 @@
 using Prometheus.Devices.Core.Connections;
+using Prometheus.Devices.Core.Utils;
 
 namespace Prometheus.Devices.Printers
 {
@@ -16,6 +17,16 @@ namespace Prometheus.Devices.Printers
         {
             IpAddress = ipAddress;
             Port = port;
+        }
+
+        protected override RetryPolicy CreateDefaultRetryPolicy()
+        {
+            return new RetryPolicy
+            {
+                MaxRetries = 5,
+                DelayMs = 2000,
+                ExponentialBackoff = true
+            };
         }
 
         public static NetworkPrinter Create(string ipAddress, int port = 9100, string name = null)
