@@ -1,16 +1,14 @@
 using Prometheus.Devices.Core.Interfaces;
-using Prometheus.Devices.Core.Connections;
 using Prometheus.Devices.Core.Drivers;
 using Prometheus.Devices.Core.Profiles;
 using Prometheus.Devices.Printers.Drivers.EscPos;
-using Prometheus.Devices.Printers.Drivers.Zpl;
 using DeviceWrappers.Devices.Printer;
 
 namespace Prometheus.Devices.Common.Factories
 {
     /// <summary>
     /// Factory for creating printer devices
-    /// Supports: Driver-based (ESC/POS, ZPL), Network, Serial, USB, Office printers
+    /// Supports: Driver-based (ESC/POS), Network, Serial, USB, Office printers
     /// Cross-platform: Windows, Linux, macOS
     /// </summary>
     public static class PrinterFactory
@@ -51,20 +49,7 @@ namespace Prometheus.Devices.Common.Factories
             string? deviceName = null)
         {
             return CreateDriver(connection, profile, new EscPosDriver(), deviceId, deviceName);
-        }
-
-        /// <summary>
-        /// Create ZPL printer (Zebra label printers for packaging/shipping labels)
-        /// Cross-platform: ✅ Windows, Linux, macOS
-        /// </summary>
-        public static IPrinter CreateZpl(
-            IConnection connection,
-            PrinterProfile? profile = null,
-            string? deviceId = null,
-            string? deviceName = null)
-        {
-            return CreateDriver(connection, profile, new ZplDriver(), deviceId, deviceName);
-        }
+        }       
 
         /// <summary>
         /// Resolve printer driver from profile protocol
@@ -74,7 +59,6 @@ namespace Prometheus.Devices.Common.Factories
             var proto = (profile?.Protocol ?? "").ToUpperInvariant();
             return proto switch
             {
-                "ZPL" => new ZplDriver(),
                 "ESC_POS" or "ESCPOS" => new EscPosDriver(),
                 "BIXOLON" => new EscPosDriver(), // Bixolon uses ESC/POS
                 _ => new EscPosDriver() // Default to ESC/POS

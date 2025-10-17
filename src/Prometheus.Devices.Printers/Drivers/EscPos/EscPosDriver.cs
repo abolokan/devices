@@ -4,7 +4,7 @@ using Prometheus.Devices.Core.Drivers;
 namespace Prometheus.Devices.Printers.Drivers.EscPos
 {
     /// <summary>
-    /// Basic ESC/POS driver (compatible with most receipt printers)
+    /// Basic ESC/POS driver (compatible with most receipt printers like Epson, Bixolon, Star, Citizen)
     /// Cross-platform: Works on Windows, Linux, macOS
     /// </summary>
     public class EscPosDriver : IPrinterDriver
