@@ -30,7 +30,7 @@ namespace DeviceWrappers.Devices.Printer
         public event EventHandler<PrintJobStatusChangedEventArgs> PrintJobStatusChanged;
 
         public OfficePrinter(string deviceId, string deviceName, string systemPrinterName, IPlatformPrinter platformPrinter)
-            : base(deviceId, deviceName, new NullConnection())
+            : base(deviceId, deviceName, new EmbeddedConnection())
         {
             _systemPrinterName = systemPrinterName ?? throw new ArgumentNullException(nameof(systemPrinterName));
             _platformPrinter = platformPrinter ?? throw new ArgumentNullException(nameof(platformPrinter));

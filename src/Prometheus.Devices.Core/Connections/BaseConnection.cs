@@ -8,7 +8,7 @@ namespace Prometheus.Devices.Core.Connections
     public abstract class BaseConnection : IConnection
     {
         protected ConnectionStatus _status = ConnectionStatus.Disconnected;
-        protected readonly object _statusLock = new object();
+        protected readonly object _statusLock = new();
         protected bool _disposed = false;
 
         public ConnectionStatus Status
@@ -24,7 +24,7 @@ namespace Prometheus.Devices.Core.Connections
 
         public abstract string ConnectionInfo { get; }
 
-        public event EventHandler<ConnectionStatusChangedEventArgs> StatusChanged;
+        public event EventHandler<ConnectionStatusChangedEventArgs> StatusChanged = delegate { };
 
         public abstract Task OpenAsync(CancellationToken cancellationToken = default);
         public abstract Task CloseAsync(CancellationToken cancellationToken = default);
@@ -52,10 +52,7 @@ namespace Prometheus.Devices.Core.Connections
             });
         }
 
-        protected virtual void OnStatusChanged(ConnectionStatusChangedEventArgs e)
-        {
-            StatusChanged?.Invoke(this, e);
-        }
+        protected virtual void OnStatusChanged(ConnectionStatusChangedEventArgs e) => StatusChanged.Invoke(this, e);
 
         protected void ThrowIfDisposed()
         {

@@ -26,7 +26,7 @@ namespace DeviceWrappers.Devices.Camera
         public int DeviceIndex => _deviceIndex;
 
         public LocalCamera(int deviceIndex, string deviceId = null, string deviceName = null)
-            : base(deviceId ?? $"LOCAL_CAM_{deviceIndex}", deviceName ?? $"Local Camera #{deviceIndex}", new NullConnection())
+            : base(deviceId ?? $"LOCAL_CAM_{deviceIndex}", deviceName ?? $"Local Camera #{deviceIndex}", new EmbeddedConnection())
         {
             _deviceIndex = deviceIndex;
         }

@@ -23,7 +23,7 @@ namespace DeviceWrappers.Devices.Scanner
         }
 
         public OfficeScanner(string deviceId, string deviceName, string systemScannerName, IPlatformScanner platformScanner)
-            : base(deviceId, deviceName, new NullConnection())
+            : base(deviceId, deviceName, new EmbeddedConnection())
         {
             _systemScannerName = systemScannerName ?? throw new ArgumentNullException(nameof(systemScannerName));
             _platformScanner = platformScanner ?? throw new ArgumentNullException(nameof(platformScanner));

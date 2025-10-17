@@ -5,7 +5,7 @@ namespace Prometheus.Devices.Core.Connections
     /// <summary>
     /// Null local connection for devices that don't require transport (built-in camera, etc.)
     /// </summary>
-    public class NullConnection : BaseConnection
+    public class EmbeddedConnection : BaseConnection
     {
         public override string ConnectionInfo => "LOCAL:null";
 
