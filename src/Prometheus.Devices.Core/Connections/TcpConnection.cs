@@ -67,12 +67,12 @@ namespace Prometheus.Devices.Core.Connections
             {
                 SetStatus(ConnectionStatus.Connecting, $"Connecting to {_host}:{_port}...");
 
-                _client = new TcpClient();
-                
-                // Set socket options for production
-                _client.NoDelay = true;  // Disable Nagle algorithm for low latency
-                _client.SendBufferSize = 8192;
-                _client.ReceiveBufferSize = 8192;
+                _client = new TcpClient
+                {
+                    NoDelay = true,  // Disable Nagle algorithm for low latency
+                    SendBufferSize = 8192,
+                    ReceiveBufferSize = 8192
+                };
 
                 // Connect with timeout
                 using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
@@ -259,12 +259,12 @@ namespace Prometheus.Devices.Core.Connections
         public bool DataAvailable => _stream?.DataAvailable ?? false;
 
         /// <summary>
-        /// Reconnect to device (useful for error recovery)
+        /// Reconnect to device
         /// </summary>
         public async Task ReconnectAsync(CancellationToken cancellationToken = default)
         {
             await CloseAsync(cancellationToken);
-            await Task.Delay(1000, cancellationToken); // Wait before reconnect
+            await Task.Delay(1000, cancellationToken);
             await OpenAsync(cancellationToken);
         }
 

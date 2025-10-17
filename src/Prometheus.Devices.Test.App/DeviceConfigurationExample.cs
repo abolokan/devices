@@ -32,17 +32,17 @@ namespace Prometheus.Devices.Test.App
                 {
                     ICamera camera = cameraConfig.Type?.ToLower() switch
                     {
-                        "local" => DeviceFactory.CreateLocalCamera(
+                        "local" => CameraFactory.CreateLocal(
                             cameraConfig.Index ?? 0, 
                             key),
 
-                        "ip" => DeviceFactory.CreateIpCamera(
+                        "ip" => CameraFactory.CreateIp(
                             cameraConfig.IpAddress, 
                             cameraConfig.Port ?? 8080, 
                             key),
 
                         "usb" when cameraConfig.VendorId.HasValue && cameraConfig.ProductId.HasValue 
-                            => DeviceFactory.CreateUsbCamera(
+                            => CameraFactory.CreateUsb(
                                 cameraConfig.VendorId.Value,
                                 cameraConfig.ProductId.Value,
                                 key),
@@ -81,21 +81,21 @@ namespace Prometheus.Devices.Test.App
                     {
                         "driver" => CreateDriverPrinter(printerConfig, key),
                         
-                        "office" => DeviceFactory.CreateOfficePrinter(
+                        "office" => PrinterFactory.CreateOffice(
                             printerConfig.SystemPrinterName),
 
-                        "network" => DeviceFactory.CreateNetworkPrinter(
+                        "network" => PrinterFactory.CreateNetwork(
                             printerConfig.IpAddress,
                             printerConfig.Port,
                             key),
 
-                        "serial" => DeviceFactory.CreateSerialPrinter(
+                        "serial" => PrinterFactory.CreateSerial(
                             printerConfig.PortName,
                             printerConfig.BaudRate,
                             key),
 
                         "usb" when printerConfig.VendorId.HasValue && printerConfig.ProductId.HasValue
-                            => DeviceFactory.CreateUsbPrinter(
+                            => PrinterFactory.CreateUsb(
                                 printerConfig.VendorId.Value,
                                 printerConfig.ProductId.Value,
                                 key),
@@ -119,7 +119,7 @@ namespace Prometheus.Devices.Test.App
 
                 try
                 {
-                    var scanner = DeviceFactory.CreateOfficeScanner(scannerConfig.SystemScannerName);
+                    var scanner = ScannerFactory.CreateOffice(scannerConfig.SystemScannerName);
                     scanner.Settings.Resolution = scannerConfig.Resolution;
                     scanner.Settings.ColorMode = scannerConfig.ColorMode?.ToLower() switch
                     {
@@ -146,10 +146,10 @@ namespace Prometheus.Devices.Test.App
                 throw new FileNotFoundException($"Printer profile not found: {profilePath}");
 
             var profile = ProfileLoader.LoadPrinterProfile(profilePath);
-            var driver = DeviceFactory.ResolvePrinterDriver(profile);
+            var driver = PrinterFactory.ResolveDriver(profile);
             var connection = new TcpConnection(config.IpAddress, config.Port);
 
-            return DeviceFactory.CreateDriverPrinter(connection, profile, driver, name);
+            return PrinterFactory.CreateDriver(connection, profile, driver, deviceName: name);
         }
 
         /// <summary>
