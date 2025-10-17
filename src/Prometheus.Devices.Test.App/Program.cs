@@ -34,6 +34,9 @@ namespace Prometheus.Devices.Test.App
             Console.WriteLine("  4. Scanner (Office - Windows/Linux)");
             Console.WriteLine("  5. Health Check (All registered devices)");
             Console.WriteLine("  6. Load devices from appsettings.json");
+            Console.WriteLine("  7. Barcode Scanner (Zebra SE4107 - USB)");
+            Console.WriteLine("  8. Barcode Scanner (Zebra SE4107 - Serial)");
+            Console.WriteLine("  9. Barcode Scanner (Zebra SE4107 - Auto-detect)");
             Console.WriteLine();
 
             bool isRunning = true;
@@ -71,6 +74,18 @@ namespace Prometheus.Devices.Test.App
 
                     case "6":
                     await LoadDevicesFromConfigAsync();
+                    break;
+
+                    case "7":
+                    await BarcodeScannerTests.TestZebraUsbScannerAsync(_deviceManager);
+                    break;
+
+                    case "8":
+                    await BarcodeScannerTests.TestZebraSerialScannerAsync(_deviceManager);
+                    break;
+
+                    case "9":
+                    await BarcodeScannerTests.TestZebraAutoScannerAsync(_deviceManager);
                     break;
 
                     default:

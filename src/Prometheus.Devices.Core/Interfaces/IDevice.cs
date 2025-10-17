@@ -70,6 +70,7 @@ namespace Prometheus.Devices.Core.Interfaces
         Camera,
         Printer,
         Scanner,
+        BarcodeScanner,
         Sensor,
         Display,
         Other

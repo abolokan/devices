@@ -21,7 +21,7 @@ namespace Prometheus.Devices.Test.App.Tests
             Console.WriteLine();
             Console.WriteLine("=== PRINTER TEST (ESC/POS) ===");
 
-            var profilePath = Path.Combine(AppContext.BaseDirectory, "printer.profile.json");
+            var profilePath = Path.Combine(AppContext.BaseDirectory, "profiles", "printer.profile.json");
             if (!File.Exists(profilePath))
             {
                 Console.WriteLine($"Profile not found: {profilePath}");

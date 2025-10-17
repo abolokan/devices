@@ -1,0 +1,101 @@
+{
+  "Manufacturer": "Zebra Technologies",
+  "Model": "SE4107",
+  "Version": "1.0",
+  "Protocol": "USB-HID / Serial",
+  "Description": "Zebra SE4107 Compact Scan Engine - 1D/2D barcode and QR code scanner",
+  
+  "Connection": {
+    "USB": {
+      "VendorId": "0x05E0",
+      "ProductId": "0x1900",
+      "Description": "Zebra USB HID Scanner"
+    },
+    "Serial": {
+      "BaudRate": 9600,
+      "DataBits": 8,
+      "Parity": "None",
+      "StopBits": "One",
+      "Handshake": "None",
+      "DefaultPorts": {
+        "Windows": "COM3",
+        "Linux": "/dev/ttyUSB0"
+      }
+    }
+  },
+  
+  "Capabilities": {
+    "SupportedBarcodes": [
+      "Code39",
+      "Code93",
+      "Code128",
+      "EAN8",
+      "EAN13",
+      "UPCA",
+      "UPCE",
+      "Interleaved2of5",
+      "Codabar",
+      "GS1DataBar",
+      "QRCode",
+      "DataMatrix",
+      "PDF417",
+      "Aztec"
+    ],
+    "ScanModes": ["Single", "Continuous"],
+    "TriggerModes": ["Manual", "Automatic"],
+    "BeepSupport": true,
+    "LEDSupport": true
+  },
+  
+  "DefaultSettings": {
+    "ScanMode": "Single",
+    "TriggerMode": "Manual",
+    "BeepOnScan": true,
+    "ScanTimeout": 5000,
+    "EnabledBarcodes": null
+  },
+  
+  "Commands": {
+    "Description": "Scanner control commands (manufacturer specific)",
+    "Trigger": "<SCAN>",
+    "Beep": "<BEEP>{duration}</BEEP>",
+    "SetTriggerManual": "<TRIGGER>MANUAL</TRIGGER>",
+    "SetTriggerAuto": "<TRIGGER>AUTO</TRIGGER>",
+    "EnableQRCode": "<ENABLE>QRCODE</ENABLE>",
+    "EnableCode128": "<ENABLE>CODE128</ENABLE>",
+    "EnableEAN13": "<ENABLE>EAN13</ENABLE>",
+    "EnableDataMatrix": "<ENABLE>DATAMATRIX</ENABLE>",
+    "Reset": "<RESET>"
+  },
+  
+  "Performance": {
+    "ScanRate": "60 scans/second (typical)",
+    "DecodeDistance": "0 to 203 mm (depending on barcode type)",
+    "Orientation": "Roll: 360°, Pitch: ±65°, Skew: ±60°",
+    "LightSource": "White LED illumination",
+    "ImageSensor": "752 x 480 pixel array"
+  },
+  
+  "PhysicalSpecifications": {
+    "Dimensions": "27.2 x 33.2 x 19.6 mm",
+    "Weight": "15.5 g",
+    "InterfaceOptions": ["USB", "RS-232", "Keyboard Wedge"],
+    "OperatingTemperature": "0°C to 50°C",
+    "StorageTemperature": "-40°C to 70°C"
+  },
+  
+  "Notes": [
+    "Supports reading damaged and poor quality barcodes",
+    "Omnidirectional scanning capability",
+    "Compact design suitable for embedded applications",
+    "Low power consumption",
+    "Configurable beep tones and volumes",
+    "SDK available for advanced integration"
+  ],
+  
+  "Documentation": {
+    "Datasheet": "docs/Zebra se4107 datasheet.pdf",
+    "SDK": "https://www.zebra.com/gb/en/support-downloads/software/scanner-software/scanner-sdk-for-linux.html"
+  }
+}
+

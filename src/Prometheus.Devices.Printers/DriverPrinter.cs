@@ -3,6 +3,7 @@ using Prometheus.Devices.Core.Devices;
 using Prometheus.Devices.Core.Drivers;
 using Prometheus.Devices.Core.Interfaces;
 using Prometheus.Devices.Core.Profiles;
+using PrinterBarcodeType = Prometheus.Devices.Core.Drivers.BarcodeType;
 
 namespace DeviceWrappers.Devices.Printer
 {   
@@ -149,7 +150,7 @@ namespace DeviceWrappers.Devices.Printer
         /// </summary>
         public async Task<PrintJob> PrintBarcodeAsync(
             string data, 
-            BarcodeType type = BarcodeType.Code128,
+            PrinterBarcodeType type = PrinterBarcodeType.Code128,
             int height = 100, 
             int width = 3,
             CancellationToken cancellationToken = default)
@@ -226,8 +227,8 @@ namespace DeviceWrappers.Devices.Printer
         public async Task<PrintJob> PrintLabelAsync(
             string title,
             string barcodeData,
-            BarcodeType barcodeType = BarcodeType.Code128,
-            string[] additionalLines = null,
+            PrinterBarcodeType barcodeType = PrinterBarcodeType.Code128,
+            string[]? additionalLines = null,
             CancellationToken cancellationToken = default)
         {
             ThrowIfNotReady();
