@@ -68,8 +68,8 @@ namespace DeviceWrappers.Devices.Printer
             ThrowIfNotReady();
             
             // Create temp file
-            var tempFile = System.IO.Path.GetTempFileName();
-            await System.IO.File.WriteAllBytesAsync(tempFile, data, cancellationToken);
+            var tempFile = Path.GetTempFileName();
+            await File.WriteAllBytesAsync(tempFile, data, cancellationToken);
 
             try
             {
